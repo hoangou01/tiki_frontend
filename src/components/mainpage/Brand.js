@@ -7,18 +7,18 @@ import {
   Container,
   Row,
 } from "react-bootstrap";
-import API, { endpoints } from "../configs/API";
+import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
 
-const Sellers = () => {
-//   const [sellers, setSellers] = useEffect([]);
+const Brands = () => {
+//   const [Brands, setBrands] = useEffect([]);
 //   useEffect(() => {
-//     const loadSellers = async () => {
+//     const loadBrands = async () => {
 //       let res = await API.get(endpoints["sellers"]);
-//       setSellers(res.data);
+//       setBrands(res.data);
 //     };
 
-//     loadSellers();
+//     loadBrands();
 //   }, []);
   return (
     <>
@@ -111,4 +111,4 @@ const Sellers = () => {
     </>
   );
 };
-export default Sellers;
+export default Brands;

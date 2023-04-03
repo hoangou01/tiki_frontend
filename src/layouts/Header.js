@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
 import API, { endpoints } from "../configs/API";
 import { Button, Col, Container, Form, Nav, Navbar, Row } from "react-bootstrap";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Header = () => {
   const [categories, setCategories] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const loadCategories = async () => {
-      let res = await API.get(endpoints["categories"]);
+      setIsLoading(true);
+      try {
+        var res = await API.get(endpoints["categories"]);
+      } catch (error) {
+        setIsLoading(false);
+      }
+      setIsLoading(false);
       setCategories(res.data);
     };
 
     loadCategories();
   }, []);
 
-  return (
-    <>
+  
+    const renderCategories = (
+      <>
       <div id="header">
         <Container>
           <div className="top-header">
@@ -124,7 +132,15 @@ const Header = () => {
         </div>
       </div>
     </>
+    )
+
+  return (
+    <>
+      {isLoading ? <LoadingSpinner /> : renderCategories}
+
+    </>   
   );
 };
+
 
 export default Header;
