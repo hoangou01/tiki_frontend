@@ -1221,3 +1221,35 @@ a{
 .form_addproduct > button{
   margin-top: 10px;
 }
+/*********** profile customer ***************/
+/********************************************/
+.profile_menu > ul{
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+.img_product{
+  width: 100px;
+}
+.list_order{
+  background-color: #f2f1f1;
+  padding: 12px 14px;
+}
+.order_item{
+  padding: 14px 0;
+  border-bottom: 1px solid #ccc;
+}
+.order_item .price{
+  float: right !important;
+  margin-top: 40px;
+}
+.order_item .price > span:last-child{
+  margin-left: 10px;
+}
+.order_info{
+  padding: 12px 14px;
+}
+.customer_address .customer_name{
+  font-weight: 700;
+}

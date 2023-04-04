@@ -9,6 +9,7 @@ export const endpoints = {
     // "sellers":`/sellers/`,
     // "seller-detail":(sellerId)=> `/sellers/${sellerId}`,
     // "customer-detail":(customerId) =>`/customers/${customerId}`
+    // "order-detail":(orderId)=>`/orders/${orderId}`
 }
 
 export default axios.create({

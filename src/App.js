@@ -10,6 +10,10 @@ import SignupSeller from "./components/register/SignupSeller";
 import Product from "./layouts/Product";
 import SellerPage from "./layouts/SellerPage";
 import AddProduct from "./layouts/AddProduct";
+import ProfileCustomer from "./layouts/ProfileCustomer";
+import CustomerOrder from "./components/profileCustomer/CustomerOrder";
+import CustomerInfo from "./components/profileCustomer/CustomerInfo"
+import OrderDetail from "./components/profileCustomer/OrderDetail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
 function App() {
@@ -26,6 +30,12 @@ function App() {
           <Route exact path="/login/seller" Component={LoginSeller } />
           <Route exact path="/login/customer" Component={LoginSeller } />
           <Route exact path="/add/product" Component={AddProduct } />
+          <Route path="/customers/1" element={<ProfileCustomer/>}>
+              <Route path="profile" element={<CustomerInfo/>}/>
+              <Route path="orders" element={<CustomerOrder/>}/>
+              <Route path="order-detail" element={<OrderDetail/>}/>
+          </Route>
+          {/* <Route path='*' element={<NotFound />} /> */}
         </Routes>
         <Footer />
       </BrowserRouter>
