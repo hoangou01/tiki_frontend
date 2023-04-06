@@ -24,7 +24,7 @@ const CustomerOrder = () => {
               <MDBCol lg="12" className="mb-4 mb-lg-0">
                 <hr></hr>
 
-                <Link to={'/'} className="text-dark">
+                <Link to={`/customers/${1}/orders/${1}`} className="text-dark">
                   <div className="order_item">
                     <div className="d-flex">
                       <div className="left">

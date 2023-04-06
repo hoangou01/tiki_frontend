@@ -9,25 +9,27 @@ import {
 } from "react-bootstrap";
 import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import LoadingSpinner from "../LoadingSpinner";
 import Seller from "./Seller";
-const ProductEvaluate = (id) => {
-//   const [productEvaluate, setproductEvaluate] = useEffect([]);
-//   const [isLoading, setIsLoading] = useState(false);
-//   useEffect(() => {
-//     const loadProductEvaluate = async () => {
-//       setIsLoading(true);
-//       try {
-//         let res = await API.get(endpoints["productDetail"] + id);
-//         setIsLoading(false);
-//       } catch (error) {
-//         setIsLoading(false);
-//       }
-//       setProductEvaluate(res.data);
-//     };
+import { useSearchParams } from "react-router-dom";
+const ProductEvaluate = ({productId}) => {
+  const [productEvaluate, setproductEvaluate] = useEffect([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-//     loadProductEvaluate();
-//   }, []);
+  // useEffect(() => {
+  //   const loadProductEvaluates = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       var res = await API.get(endpoints["comments"](productId));
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //     }
+  //     setproductEvaluate(res.data);
+  //   };
+
+  //   loadProductEvaluates();
+  // }, [productId]);
 
   return (
     <>

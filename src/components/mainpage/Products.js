@@ -193,7 +193,7 @@ const ProductMain = () => {
               <div className="recommend-list_product">
                 <Row>
                   <Col md={2}>
-                    <Items />
+                    <Items obj={1} />
                   </Col>
                 </Row>
               </div>

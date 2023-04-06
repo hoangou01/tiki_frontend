@@ -9,16 +9,16 @@ import {
 } from "react-bootstrap";
 import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import LoadingSpinner from "../LoadingSpinner";
 import Seller from "./Seller";
-const ProductDetail = (id) => {
+const ProductDetail = ({productId}) => {
   // const [productDetail, setproductDetail] = useEffect([]);
   // const [isLoading, setIsLoading] = useState(false);
   // useEffect(() => {
   //   const loadProductDetail = async () => {
   //     setIsLoading(true);
   //     try {
-  //       let res = await API.get(endpoints["productDetail"] + id);
+  //       var res = await API.get(endpoints["productDetail"](productId));
   //       setIsLoading(false);
   //     } catch (error) {
   //       setIsLoading(false);
@@ -27,7 +27,7 @@ const ProductDetail = (id) => {
   //   };
 
   //   loadProductDetail();
-  // }, []);
+  // }, [productId]);
 
   return (
     <>

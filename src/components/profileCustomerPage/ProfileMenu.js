@@ -6,8 +6,8 @@ const ProfileMenu = ()=>{
         <>
             <div className="profile_menu">
                 <ul>
-                    <NavLink className='nav-link text-dark' to={'/customer/info'}>Thông tin khách hàng</NavLink>
-                    <NavLink className='nav-link text-dark' to={'/customer/order'}>Đơn hàng</NavLink>
+                    <NavLink className='nav-link text-dark' to={`/customers/${1}/profile`}>Thông tin khách hàng</NavLink>
+                    <NavLink className='nav-link text-dark' to={`/customers/${1}/orders`}>Đơn hàng</NavLink>
                 </ul>
             </div>
         </>

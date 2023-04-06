@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap"
-import CustomerInfo from "../components/profileCustomer/CustomerInfo"
-import ProfileMenu from "../components/profileCustomer/ProfileMenu"
-import CustomerOrder from "../components/profileCustomer/CustomerOrder"
+import CustomerInfo from "../components/profileCustomerPage/CustomerInfo"
+import ProfileMenu from "../components/profileCustomerPage/ProfileMenu"
+import CustomerOrder from "../components/profileCustomerPage/CustomerOrder"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Outlet } from "react-router-dom"
 const ProfileCustomer = ()=>{

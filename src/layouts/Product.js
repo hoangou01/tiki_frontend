@@ -8,12 +8,31 @@ import {
   Row,
 } from "react-bootstrap";
 import API, { endpoints } from "../configs/API";
-import ProductDescription from "../components/productpage/ProductDescription";
-import ProductDetail from "../components/productpage/ProductDetail";
-import ProductEvaluate from "../components/productpage/ProductEvaluate";
-import RecommendProduct from "../components/productpage/recommendProduct";
-
+import ProductDescription from "../components/productPage/ProductDescription";
+import ProductDetail from "../components/productPage/ProductDetail";
+import ProductEvaluate from "../components/productPage/ProductEvaluate";
+import RecommendProduct from "../components/productPage/recommendProduct";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { useSearchParams } from "react-router-dom";
 const Product = () => {
+  // const [q] = useSearchParams()
+  // var productId = q.get("productId")
+  // const [productDetail, setproductDetail] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // useEffect(() => {
+  //   const loadProductDetail = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       var res = await API.get(endpoints['product-detail'](productId));
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //     }
+  //     setIsLoading(false);
+  //     setproductDetail(res.data);
+  //   };
+
+  //   loadProductDetail();
+  // }, [productId]);
   return (
     <>
       <div id="product_section">
@@ -37,18 +56,18 @@ const Product = () => {
                 </ul>
               </Col>
               <Col md={12}>
-                <ProductDetail />
+                <ProductDetail  />
               </Col>
               <Col md={12}>
-                <RecommendProduct />
+                <RecommendProduct  />
               </Col>
               <Col md={12}>
                 <Row>
-                  <ProductDescription />
+                  <ProductDescription  />
                 </Row>
               </Col>
               <Col md={12}>
-                <ProductEvaluate />
+                <ProductEvaluate  />
                 
                 <div class="advertisement_banner_section">
                   <Row>

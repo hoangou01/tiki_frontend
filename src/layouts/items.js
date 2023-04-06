@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-const Items = () => {
-  let url = `product/`;
+const Items = ({obj}) => {
+  let url = `productDetails/${obj}`;
   return (
     <>
       <Link to={url} className='text-dark shadow_style'>

@@ -1253,3 +1253,82 @@ a{
 .customer_address .customer_name{
   font-weight: 700;
 }
+.order_info .content{
+  padding: 12px 14px;
+  background-color: #ccc;
+  height: 200px;
+}
+.list_products{
+  padding: 12px 14px;
+  background-color: #ccc;
+  width: 100%;
+  margin-top: 20px;
+}
+.list_products thead tr{
+  border-bottom: 1px solid #fff;
+}
+.list_products thead tr th{
+    display: table-cell;
+    padding: 20px 15px;
+    border-top: none;
+    min-width: 100px;
+    position: relative;
+    background: 0px 0px;
+    color: rgb(120, 120, 120);
+    font-size: 15px;
+    font-weight: 400;
+  
+    text-align: left;
+}
+.list_products thead tr th:first-child{
+    width: 50%;
+}
+.list_products thead tr th:nth-child(2){
+  width: 10%;
+}
+.list_products thead tr th:nth-child(3){
+  width: 10%;
+}
+.list_products thead tr th:nth-child(4){
+  width: 10%;
+}
+.list_products thead tr th:nth-child(5){
+  width: 20%;
+  float: right;
+}
+.product_item{
+  padding: 2px 4px;
+}
+.product_item img{
+  width: 100px;
+}
+.list_products tbody tr td:last-child{
+  float: right;
+  margin-top: 30px;
+}
+.list_products tbody tr td{
+  display: table-cell;
+  padding: 20px 15px;
+  border-top: none;
+  min-width: 100px;
+  position: relative;
+  background: 0px 0px;
+  color: rgb(120, 120, 120);
+  font-size: 15px;
+  font-weight: 400;
+  text-align: left;
+}
+.list_products tbody tr{
+  border-bottom: 1px solid #fff;
+}
+.list_products tfoot tr td:first-child{
+  /* text-align: right; */
+}
+.list_products tfoot tr td{
+  text-align: right;
+    display: table-cell;
+    padding: 5px 20px;
+    max-width: 550px;
+    min-width: 125px;
+    color: rgb(36, 36, 36);
+}

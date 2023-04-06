@@ -9,25 +9,25 @@ import {
 } from "react-bootstrap";
 import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import LoadingSpinner from "../LoadingSpinner";
 import Seller from "./Seller";
-const ProductDescription = (id) => {
-//   const [ProductDescription, setProductDescription] = useEffect([]);
-//   const [isLoading, setIsLoading] = useState(false);
-//   useEffect(() => {
-//     const loadProductDescription = async () => {
-//       setIsLoading(true);
-//       try {
-//         let res = await API.get(endpoints["productDetail"] + id);
-//         setIsLoading(false);
-//       } catch (error) {
-//         setIsLoading(false);
-//       }
-//       setProductDescription(res.data);
-//     };
+const ProductDescription = ({productId}) => {
+  // const [ProductDescription, setProductDescription] = useEffect([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // useEffect(() => {
+  //   const loadProductDescription = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       var res = await API.get(endpoints["productDetail"](productId));
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //     }
+  //     setProductDescription(res.data);
+  //   };
 
-//     loadProductDescription();
-//   }, []);
+  //   loadProductDescription();
+  // }, [productId]);
 
   return (
     <>

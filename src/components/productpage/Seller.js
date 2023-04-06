@@ -9,17 +9,17 @@ import {
 } from "react-bootstrap";
 import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
-import LoadingSpinner from "../../components/LoadingSpinner";
-const Seller = (id) => {
+import LoadingSpinner from "../LoadingSpinner";
+const Seller = ({productId}) => {
   // const [seller, setSeller] = useEffect([]);
   // useEffect(() => {
   //   const loadSeller = async () => {
-  //     let res = await API.get(endpoints["sellers"] + id);
+  //     let res = await API.get(endpoints["sellers"](productId));
   //     setSeller(res.data.results);
   //   };
 
   //   loadSeller();
-  // }, []);
+  // }, [productId]);
   return (
     <>
       <div class="shop">
