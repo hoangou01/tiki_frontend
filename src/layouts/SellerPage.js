@@ -11,9 +11,9 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { Container, Form } from "react-bootstrap";
-import SellerNav from "../components/sellerPage/SellerNav";
-import ProductSeller from "../components/sellerPage/ProductSeller";
-import SellerInfo from "../components/sellerPage/SellerInfo";
+import SellerNav from "../components/sellerpage/SellerNav";
+import ProductSeller from "../components/sellerpage/ProductSeller";
+import SellerInfo from "../components/sellerpage/SellerInfo";
 function SellerPage() {
   return (
     <>

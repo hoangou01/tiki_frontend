@@ -4,7 +4,7 @@ import Header from "./layouts/Header";
 import Footer from "./layouts/Footer";
 import Main from "./layouts/main";
 import LoginCustomer from "./components/loginPage/LoginCustomer";
-import LoginSeller from "./components/loginPage/loginSeller";
+import LoginSeller from "./components/loginPage/LoginSeller";
 import SignupCustomer from "./components/registerPage/SignupCustomer";
 import SignupSeller from "./components/registerPage/SignupSeller";
 import Product from "./layouts/Product";
@@ -14,31 +14,41 @@ import ProfileCustomer from "./layouts/ProfileCustomer";
 import CustomerOrder from "./components/profileCustomerPage/CustomerOrder";
 import CustomerInfo from "./components/profileCustomerPage/CustomerInfo"
 import OrderDetail from "./components/profileCustomerPage/OrderDetail";
+import Login from "./layouts/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import cookie from 'react-cookies';
+import { useReducer } from 'react';
+import myUserReducer from "./reducers/myUserReducer";
+import { MyUserContext } from "./configs/MyContext";
 function App() {
+  const [user, dispatch] = useReducer(myUserReducer, cookie.load('current-user') || null)
   return (
     <>
-      <BrowserRouter forceRefresh={true}>
-        <Header />
-        <Routes>
-          <Route path="/" Component={Main} />
-          <Route path="/productDetails/:productId" Component={Product } />
-          <Route path="/sellers/sellerID" Component={SellerPage } />
-          <Route exact path="/signup/customer" Component={SignupCustomer } />
-          <Route exact path="/signup/seller" Component={SignupSeller } />
-          <Route exact path="/login/seller" Component={LoginSeller } />
-          <Route exact path="/login/customer" Component={LoginSeller } />
-          <Route exact path="/add/product" Component={AddProduct } />
-          <Route path='/customers/:customerId' element={<ProfileCustomer/>}>
-              <Route path="profile" element={<CustomerInfo/>}/>
-              <Route path="orders" element={<CustomerOrder/>}/>
-              <Route path='orders/:orderId' element={<OrderDetail/>}/>
-          </Route>
-          {/* <Route path='*' element={<NotFound />} /> */}
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <MyUserContext.Provider value={[user, dispatch]}>
+        <BrowserRouter forceRefresh={true}>
+          <Header />
+          <Routes>
+            <Route path="/" Component={Main} />
+            <Route path="/productDetails/:productId" Component={Product} />
+            <Route path="/sellers/sellerID" Component={SellerPage} />
+            <Route exact path="/signup/customer" Component={SignupCustomer} />
+            <Route exact path="/signup/seller" Component={SignupSeller} />
+            <Route exact path="/login/" element={<Login/>}>
+                <Route path="seller" element={<LoginSeller />} />
+                <Route path="customer" element={<LoginCustomer />} />
+            </Route>
+            <Route exact path="/add/product" Component={AddProduct} />
+            <Route path='/customers/:customerId' element={<ProfileCustomer />}>
+              <Route path="profile" element={<CustomerInfo />} />
+              <Route path="orders" element={<CustomerOrder />} />
+              <Route path='orders/:orderId' element={<OrderDetail />} />
+            </Route>
+            {/* <Route path='*' element={<NotFound />} /> */}
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </MyUserContext.Provider>
     </>
   );
 }

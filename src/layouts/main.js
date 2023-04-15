@@ -8,10 +8,10 @@ import {
   Row,
 } from "react-bootstrap";
 import API, { endpoints } from "../configs/API";
-import Brands from "../components/mainPage/Brand";
-import Categories from "../components/mainPage/categories";
+import Brands from "../components/mainpage/Brand";
+import Categories from "../components/mainpage/categories";
 import Items from "./items";
-import ProductMain from "../components/mainPage/Products";
+import ProductMain from "../components/mainpage/Products";
 const Main = () => {
   return (
     <>

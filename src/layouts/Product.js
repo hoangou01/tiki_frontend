@@ -8,10 +8,10 @@ import {
   Row,
 } from "react-bootstrap";
 import API, { endpoints } from "../configs/API";
-import ProductDescription from "../components/productPage/ProductDescription";
-import ProductDetail from "../components/productPage/ProductDetail";
-import ProductEvaluate from "../components/productPage/ProductEvaluate";
-import RecommendProduct from "../components/productPage/recommendProduct";
+import ProductDescription from "../components/productpage/ProductDescription";
+import ProductDetail from "../components/productpage/ProductDetail";
+import ProductEvaluate from "../components/productpage/ProductEvaluate";
+import RecommendProduct from "../components/productpage/recommendProduct";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useSearchParams } from "react-router-dom";
 const Product = () => {
