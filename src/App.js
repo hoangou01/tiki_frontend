@@ -4,7 +4,7 @@ import Header from "./layouts/Header";
 import Footer from "./layouts/Footer";
 import Main from "./layouts/main";
 import LoginCustomer from "./components/loginPage/LoginCustomer";
-import LoginSeller from "./components/loginPage/LoginSeller";
+
 import SignupCustomer from "./components/registerPage/SignupCustomer";
 import SignupSeller from "./components/registerPage/SignupSeller";
 import Product from "./layouts/Product";
@@ -21,6 +21,7 @@ import cookie from 'react-cookies';
 import { useReducer } from 'react';
 import myUserReducer from "./reducers/myUserReducer";
 import { MyUserContext } from "./configs/MyContext";
+import LoginSeller from "./components/loginPage/LoginSeller";
 function App() {
   const [user, dispatch] = useReducer(myUserReducer, cookie.load('current-user') || null)
   return (

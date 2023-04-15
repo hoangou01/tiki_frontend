@@ -11,11 +11,13 @@ export const endpoints = {
     "customer-detail":(customerId) =>`/customers/${customerId}`,
     "order-detail":(orderId)=>`/orders/${orderId}`,
     'comments':(productId) =>`productDetails/${productId}/evaluates/`,
+    "register-customer":"register/customer/",
+    "register-seller":"register/seller/",
     "login": 'o/token/',
     
 }
 export const authAPI = () => axios.create({
-    baseURL: "http://thanhduong.pythonanywhere.com/",
+    baseURL: "",
     headers: {
         "Authorization": `Bearer ${cookie.load("access-token")}`
     }
