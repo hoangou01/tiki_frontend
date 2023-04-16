@@ -17,16 +17,19 @@ import { useNavigate } from "react-router-dom";
 import API, { endpoints } from "../../configs/API";
 import { useRef } from "react";
 import setErr from "../../layouts/Error";
+import LoadingSpinner from "../LoadingSpinner";
 function SignupSeller() {
   const [seller, setSeller] = useState({
     firstName: "",
-    lastName: "",
     username: "",
     password: "",
     phone: "",
     confirmPassword: "",
+    is_customer: false,
+    is_seller: true,
+    is_official: false,
   });
-  const avatar = useRef();
+  const image = useRef();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const nav = useNavigate();
@@ -38,14 +41,14 @@ function SignupSeller() {
       try {
         let form = new FormData();
         form.append("first_name", seller.firstName);
-        form.append("last_name", seller.lastName);
         form.append("username", seller.username);
         form.append("password", seller.password);
         form.append("phone", seller.phone);
-        form.append("is_customer", false);
-        form.append("is_seller", true);
-        if (avatar.current.files.length > 0)
-          form.append("avatar", avatar.current.files[0]);
+        form.append("is_customer", seller.is_customer);
+        form.append("is_seller", seller.is_seller);
+        // if (image.current.files.length > 0)
+        //   form.append("avatar", image.current.files[0]);
+        alert(seller.is_official)
 
         let res = await API.post(endpoints["register-seller"], form, {
           headers: {
@@ -110,10 +113,10 @@ function SignupSeller() {
             <MDBCardBody className="p-5">
               <Form onSubmit={register}>
                 <MDBRow>
-                  <MDBCol col="6">
+                  <MDBCol col="12">
                     <InputItem
                       wrapperClass="mb-4"
-                      label="First name"
+                      label="shop's name"
                       name="firstName"
                       value={seller.firstName}
                       setValue={setValue}
@@ -122,7 +125,7 @@ function SignupSeller() {
                     />
                   </MDBCol>
 
-                  <MDBCol col="6">
+                  {/* <MDBCol col="6">
                     <InputItem
                       wrapperClass="mb-4"
                       label="Last name"
@@ -132,7 +135,7 @@ function SignupSeller() {
                       id="form1"
                       type="text"
                     />
-                  </MDBCol>
+                  </MDBCol> */}
                 </MDBRow>
 
                 <InputItem
@@ -144,8 +147,15 @@ function SignupSeller() {
                   id="form1"
                   type="text"
                 />
+                
+                <Form.Select onChange={setValue} name="is_official" wrapperClass="mb-4">
+                  <option disabled>is your shop official?</option>
+                  <option key={true} value={true}>yes</option>
+                  <option key={false} value={false}>no</option>
+                </Form.Select>
+                <br></br>
                 <InputItem
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-4 mt-2"
                   label="Password"
                   value={seller.password}
                   setValue={setValue}
@@ -153,11 +163,25 @@ function SignupSeller() {
                   id="form1"
                   type="password"
                 />
-                {err?
+                <InputItem
+                  wrapperClass="mb-4"
+                  label="comfrim password"
+                  value={seller.confirmPassword}
+                  setValue={setValue}
+                  name="confirmPassword"
+                  id="form1"
+                  type="password"
+                />
+                <InputItem label="avatar" type="file" ref={image} name="image" />
+                {err ? (
                   <>
-          <div className="text-danger" style={{ marginTop: '-20px' }}>{err}</div>
-        </>
-                :""}
+                    <div className="text-danger" style={{ marginTop: "-20px" }}>
+                      {err}
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
                 {/* {err != ""?<><setErr err={err}/></>:""} */}
 
                 <Button className="w-100 mb-4" type="submit" size="md">

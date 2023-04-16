@@ -57,6 +57,7 @@ const Header = () => {
   </>)
 
   if (user != null && user.is_customer == true) {
+    alert("customer")
     infoUser = (
       <>
         <li>
@@ -72,6 +73,8 @@ const Header = () => {
     )
   }
   if (user != null && user.is_seller == true) {
+    alert("seller")
+
     infoUser = (
       <>
         <li>

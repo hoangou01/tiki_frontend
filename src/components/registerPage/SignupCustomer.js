@@ -18,36 +18,66 @@ import API, { endpoints } from "../../configs/API";
 import setErr from "../../layouts/Error";
 import LoadingSpinner from "../LoadingSpinner";
 import InputItem from "../../layouts/InputItem";
+import { Axios } from "axios";
 function SignupCustomer() {
-  const [user, setUser] = useState({
+  const [customer, setCustomer] = useState({
     firstName: "",
     lastName: "",
     username: "",
+    email:"",
     password: "",
     phone: "",
     confirmPassword: "",
+    is_customer: true,
+    is_seller: false,
   });
-  const avatar = useRef();
+  const image = useRef();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+  const [uploadFile, setUploadFile] = useState("");
+  const [cloudinaryImage, setCloudinaryImage] = useState("");
   const nav = useNavigate();
   var format = /^[!#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
   const register = (evt) => {
-    console.log(user);
     evt.preventDefault();
 
+    const handleUpload = async() => {
+      alert("uploadFile");
+      const formData = new FormData();
+      formData.append("file", uploadFile);
+      formData.append("upload_preset", "qqvyn34x");
+
+      await Axios.post(
+        "https://api.cloudinary.com/v1_1/hm-findingjob/image/upload",
+        formData
+      ).then((response) => {
+          alert("cloudynary res");
+          setCloudinaryImage(response.data.secure_url);
+        })
+        .catch((error) => {
+          alert("cloudynary err");
+          setErr(error);
+        });
+    };
+
     const process = async () => {
+      
       try {
+        
         let form = new FormData();
-        form.append("first_name", user.firstName);
-        form.append("last_name", user.lastName);
-        form.append("username", user.username);
-        form.append("password", user.password);
-        form.append("phone", user.phone);
-        form.append("is_customer", true);
-        form.append("is_seller", false);
-        if (avatar.current.files.length > 0)
-          form.append("avatar", avatar.current.files[0]);
+        form.append("first_name", customer.firstName);
+        form.append("last_name", customer.lastName);
+        form.append("username", customer.username);
+        form.append("email", customer.username);
+        form.append("password", customer.password);
+        form.append("phone", customer.phone);
+        form.append("is_customer", customer.is_customer);
+        form.append("is_seller", customer.is_seller);
+        form.append("image", cloudinaryImage);
+
+        // alert(customer.firstName + customer.lastName + customer.username+customer.phone+ customer.is_customer)
+        // if (image.current.files.length > 0)
+        //   form.append("image", image.current.files[0]);
 
         let res = await API.post(endpoints["register-customer"], form, {
           headers: {
@@ -57,34 +87,39 @@ function SignupCustomer() {
         if (res.status === 201) nav("/login/customer");
         else setErr("there is a error, please turn back a few minute!");
       } catch (ex) {
+        
         let msg = "";
         for (let e of Object.values(ex.response.data)) msg += `${e} `;
 
         setErr(msg);
+        // setLoading(false)
       } finally {
         setLoading(false);
       }
     };
 
-    if (user.username === "" || user.password === "")
+    if (customer.username === "" || customer.password === "")
       setErr("Username and password is not allow null");
-    else if (user.username.indexOf("@") == -1) {
+    else if (customer.username.indexOf("@") == -1) {
       setErr("please imput email correctly");
-    } else if (user.username.indexOf(" ") >= 0 || user.username.match(format)) {
+    } else if (
+      customer.username.indexOf(" ") >= 0 ||
+      customer.username.match(format)
+    ) {
       setErr("please username is not include space and special characters!");
-    } else if (user.password !== user.confirmPassword) {
+    } else if (customer.password !== customer.confirmPassword) {
       setErr("password is not match!");
-      alert("ahah");
+      alert("1");
     } else {
       setLoading(true);
-      alert("ahah");
+      handleUpload();
       process();
     }
   };
 
   const setValue = (e) => {
     const { name, value } = e.target;
-    setUser((current) => ({ ...current, [name]: value }));
+    setCustomer((current) => ({ ...current, [name]: value }));
   };
   var renderErr = (
     <>
@@ -131,7 +166,7 @@ function SignupCustomer() {
                     label="First name"
                     id="form1"
                     name="firstName"
-                    value={user.firstName}
+                    value={customer.firstName}
                     setValue={setValue}
                     type="text"
                   />
@@ -142,9 +177,9 @@ function SignupCustomer() {
                     wrapperClass="mb-4"
                     label="Last name"
                     id="form1"
-                    setValue={setValue}
-                    value={user.lastName}
                     name="lastName"
+                    setValue={setValue}
+                    value={customer.lastName}
                     type="text"
                   />
                 </MDBCol>
@@ -153,7 +188,7 @@ function SignupCustomer() {
                 wrapperClass="mb-4"
                 label="Phone"
                 id="form1"
-                value={user.phone}
+                value={customer.phone}
                 setValue={setValue}
                 name="phone"
                 type="text"
@@ -163,7 +198,7 @@ function SignupCustomer() {
                 wrapperClass="mb-4"
                 label="Email"
                 id="form1"
-                value={user.username}
+                value={customer.username}
                 setValue={setValue}
                 name="username"
                 type="text"
@@ -172,7 +207,7 @@ function SignupCustomer() {
                 wrapperClass="mb-4"
                 label="Password"
                 id="form1"
-                value={user.password}
+                value={customer.password}
                 setValue={setValue}
                 name="password"
                 type="password"
@@ -181,11 +216,18 @@ function SignupCustomer() {
                 wrapperClass="mb-4"
                 label="comfirm password"
                 id="form1"
-                value={user.confirmPassword}
+                value={customer.confirmPassword}
                 setValue={setValue}
                 name="confirmPassword"
                 type="password"
               />
+              <input
+                type="file"
+                onChange={(event) => {
+                  setUploadFile(event.target.files[0]);
+                }}
+              />
+              <img src={cloudinaryImage} />
               {/* {err ? (
                   <>
                     <div
@@ -249,7 +291,7 @@ function SignupCustomer() {
       </MDBContainer>
     </>
   );
-  return (<>{loading ? <LoadingSpinner /> : renderRegisterCustomer}</>);
+  return <>{loading ? <LoadingSpinner /> : renderRegisterCustomer}</>;
 }
 
 export default SignupCustomer;

@@ -13,7 +13,7 @@ import cookie from "react-cookies"
 import LoadingSpinner from '../LoadingSpinner';
 import { MyUserContext } from '../../configs/MyContext';
 import API, { endpoints, authAPI } from '../../configs/API';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 const LoginCustomer = ()=> {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -24,12 +24,13 @@ const LoginCustomer = ()=> {
   const login = (evt) => {
     evt.preventDefault()
     const process = async () => {
+      alert(username+password)
       try {
         let res = await API.post(endpoints['login'], {
           "username": username,
           "password": password,
-          "client_id": "",
-          "client_secret": "",
+          "client_id": "P1DzxRpaj9KeFVfjtYKt6r6vuUC1fpi0D39Tdv2n",
+          "client_secret": "AiL1nBbTLTVecQL5PTbCuHRuLKZN6qQgo9K0TblulO1VgFfeoSl7jL1tqEMuBy9q7BHUWsMOSlFTGeHkJ1kXdhiGo4pqSstIg2La0jgiZs1osutn4Qy0G8mwi6Q03tvD",
           "grant_type": "password"
         })
 
@@ -43,7 +44,7 @@ const LoginCustomer = ()=> {
           "payload": user.data
         })
       } catch (ex) {
-        console.error(ex)
+        alert(ex)
         setErr('Username hoặc Password không hợp lệ!')
       } finally {
         setLoading(false)
@@ -92,13 +93,13 @@ const LoginCustomer = ()=> {
             <h3 className="fw-normal mb-3 ps-5 pb-3" style={{ letterSpacing: '1px' }}>Log in for customer</h3>
 
             <Form onSubmit={login}>
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' onChange={e => setUsername(e.target.value)} label='Email address' id='formControlLg' type='text' size="lg" />
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' onChange={e => setPassword(e.target.value)} label='Password' id='formControlLg' type='password' size="lg" />
+              <MDBInput wrapperClass='mb-4 mx-5 w-100' onChange={e => setUsername(e.target.value)} name="username" label='Email address' id='formControlLg' type='text' size="lg" />
+              <MDBInput wrapperClass='mb-4 mx-5 w-100' onChange={e => setPassword(e.target.value)} name="password" label='Password' id='formControlLg' type='password' size="lg" />
               {renderErr}
               <Button className="mb-4 px-5 mx-5 w-100" type='submit' color='info' size='lg'>Login</Button>
               
-              <p className="small mb-5 pb-lg-3 ms-5"><a class="text-muted" href="#!">Forgot password?</a></p>
-              <p className='ms-5'>Don't have an account? <a href="#!" class="link-info">Register here</a></p>
+              {/* <p className="small mb-5 pb-lg-3 ms-5"><a class="text-muted" href="#!">Forgot password?</a></p> */}
+              <p className='ms-5'>Don't have an account? <Link to={'/signup/customer/'}   className="link-info">Register here</Link ></p>
               
             </Form>
 
