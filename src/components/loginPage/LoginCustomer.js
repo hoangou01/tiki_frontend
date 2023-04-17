@@ -33,10 +33,10 @@ const LoginCustomer = ()=> {
           "client_secret": "AiL1nBbTLTVecQL5PTbCuHRuLKZN6qQgo9K0TblulO1VgFfeoSl7jL1tqEMuBy9q7BHUWsMOSlFTGeHkJ1kXdhiGo4pqSstIg2La0jgiZs1osutn4Qy0G8mwi6Q03tvD",
           "grant_type": "password"
         })
-
+        
         cookie.save('access-token', res.data.access_token)
 
-        let user = await authAPI().get(endpoints['current-user'])
+        let user = await authAPI().get(endpoints['current-customer'])
         cookie.save('current-user', user.data)
 
         dispatch({

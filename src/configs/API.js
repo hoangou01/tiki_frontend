@@ -14,8 +14,10 @@ export const endpoints = {
     "register-customer":"/customer/",
     "register-seller":"/seller/",
     "login": '/o/token/',
-    "current-customer":'/customer/your-user/',
-    "current-seller":'/seller/your-user/',
+    "current-customer":'/customer/current-user/',
+    "current-seller":'/seller/current-user/',
+    "add-product":(sellerId)=>`/seller/${sellerId}/`,
+
 
     
 }

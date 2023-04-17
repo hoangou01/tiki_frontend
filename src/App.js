@@ -22,6 +22,7 @@ import { useReducer } from 'react';
 import myUserReducer from "./reducers/myUserReducer";
 import { MyUserContext } from "./configs/MyContext";
 import LoginSeller from "./components/loginPage/LoginSeller";
+
 function App() {
   const [user, dispatch] = useReducer(myUserReducer, cookie.load('current-user') || null)
   return (
@@ -31,8 +32,9 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" Component={Main} />
-            <Route path="/productDetails/:productId" Component={Product} />
-            <Route path="/sellers/sellerID" Component={SellerPage} />
+            <Route path="/products/:productId" Component={Product} />
+            <Route path="/sellers/:sellerId" Component={SellerPage} />
+            <Route path="/sellers/:sellerId/products" Component={AddProduct} />
             <Route exact path="/signup/customer" Component={SignupCustomer} />
             <Route exact path="/signup/seller" Component={SignupSeller} />
             <Route exact path="/login/" element={<Login/>}>

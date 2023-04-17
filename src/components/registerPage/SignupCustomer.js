@@ -61,7 +61,7 @@ function SignupCustomer() {
     };
 
     const process = async () => {
-      
+      alert(customer.firstName + customer.lastName);
       try {
         
         let form = new FormData();
