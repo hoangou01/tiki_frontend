@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Items = ({obj}) => {
+  console.log(obj)
   let url = `productDetails/${obj}`;
   return (
     <>
@@ -9,14 +10,14 @@ const Items = ({obj}) => {
           <div className="header_product">
             <picture>
               <img
-                src="https://salt.tikicdn.com/cache/280x280/ts/product/7e/4c/61/d2a902b344f7a706e692081dcfd39ec2.jpg.webp"
-                alt=""
+                src={`http://127.0.0.1:8000/` + obj.image}
+                alt="" style={{width:"180px", height:"180px"}}
               />
             </picture>
           </div>
           <div className="product_info">
             <div className="product_name">
-              <span>Gấu bông chó Corgi cao cấp Memom - Thú nhồi bông</span>
+              <span>{obj.name}</span>
             </div>
             <div className="product_rate_sold">
               <div className="product_rate">
@@ -37,12 +38,12 @@ const Items = ({obj}) => {
                 </svg>
               </div>
               <div className="salable_product">
-                <span>còn lại 23</span>
+                <span>còn lại {obj.salable_quantity}</span>
               </div>
             </div>
             <div className="product_price">
-              <span>23.000đ</span>
-              <span className="discount"> -30%</span>
+              <span>{obj.base_price}đ</span>
+              <span className="discount"> -{obj.discount}%</span>
             </div>
             <div className="product_shipment"></div>
             <div className="isLegal">

@@ -14,7 +14,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import API , {authAPI,endpoints} from '../../configs/API';
 import cookie from "react-cookies"
 import { MyUserContext } from '../../configs/MyContext';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import setErr from '../../layouts/Error';
 function LoginSeller() {
   const [username, setUsername] = useState("")
@@ -95,10 +95,7 @@ function LoginSeller() {
               <MDBInput wrapperClass='mb-4' onChange={e=> setPassword(e.target.value)} label='Password' id='formControlLg' type='password' size="lg" />
 
               {renderErr}
-              <div className="d-flex justify-content-between mt-5 mb-4">
-                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
-                <a href="!#">Forgot password?</a>
-              </div>
+              <p className=''>Don't have an account? <Link to={'/signup/seller/'}   className="link-info">Register here</Link ></p>
 
               <MDBBtn type='submit' className="mb-4 w-100" size="lg">Sign in</MDBBtn>
             </Form>

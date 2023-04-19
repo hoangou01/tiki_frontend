@@ -12,19 +12,23 @@ import SellerPage from "./layouts/SellerPage";
 import AddProduct from "./layouts/AddProduct";
 import ProfileCustomer from "./layouts/ProfileCustomer";
 import CustomerOrder from "./components/profileCustomerPage/CustomerOrder";
-import CustomerInfo from "./components/profileCustomerPage/CustomerInfo"
+import CustomerInfo from "./components/profileCustomerPage/CustomerInfo";
 import OrderDetail from "./components/profileCustomerPage/OrderDetail";
 import Login from "./layouts/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import cookie from 'react-cookies';
-import { useReducer } from 'react';
+import cookie from "react-cookies";
+import { useReducer } from "react";
 import myUserReducer from "./reducers/myUserReducer";
-import { MyUserContext } from "./configs/MyContext";
 import LoginSeller from "./components/loginPage/LoginSeller";
-
+import { MyUserContext } from "./configs/MyContext";
+import ProductSeller from "./components/sellerpage/ProductSeller";
+import SellerInfo from "./components/sellerpage/SellerInfo";
 function App() {
-  const [user, dispatch] = useReducer(myUserReducer, cookie.load('current-user') || null)
+  const [user, dispatch] = useReducer(
+    myUserReducer,
+    cookie.load("current-user") || null
+  );
   return (
     <>
       <MyUserContext.Provider value={[user, dispatch]}>
@@ -32,20 +36,23 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" Component={Main} />
-            <Route path="/products/:productId" Component={Product} />
-            <Route path="/sellers/:sellerId" Component={SellerPage} />
-            <Route path="/sellers/:sellerId/products" Component={AddProduct} />
+            <Route path="/categories/:cateId/products/:productId/" Component={Product} />
+            <Route path="/sellers/:sellerId/" Component={SellerPage}>
+              <Route path="profile" Component={SellerInfo} />
+              <Route path="products" Component={ProductSeller} />
+            </Route>
+            <Route path="/sellers/:sellerId/add-product" Component={SellerPage}></Route>
             <Route exact path="/signup/customer" Component={SignupCustomer} />
             <Route exact path="/signup/seller" Component={SignupSeller} />
-            <Route exact path="/login/" element={<Login/>}>
-                <Route path="seller" element={<LoginSeller />} />
-                <Route path="customer" element={<LoginCustomer />} />
+            <Route exact path="/login/" element={<Login />}>
+              <Route path="seller" element={<LoginSeller />} />
+              <Route path="customer" element={<LoginCustomer />} />
             </Route>
             <Route exact path="/add/product" Component={AddProduct} />
-            <Route path='/customers/:customerId' element={<ProfileCustomer />}>
+            <Route path="/customers/:customerId" element={<ProfileCustomer />}>
               <Route path="profile" element={<CustomerInfo />} />
               <Route path="orders" element={<CustomerOrder />} />
-              <Route path='orders/:orderId' element={<OrderDetail />} />
+              <Route path="orders/:orderId" element={<OrderDetail />} />
             </Route>
             {/* <Route path='*' element={<NotFound />} /> */}
           </Routes>

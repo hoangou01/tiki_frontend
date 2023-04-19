@@ -91,7 +91,6 @@ const Header = () => {
     );
   }
   if (user !== null && user.is_seller == true) {
-    alert("seller");
 
     infoUser = (
       <>
@@ -106,8 +105,8 @@ const Header = () => {
           </Link>
           <div className="dropdown_menu">
             <ul>
-              <Link className="dropdown_menu_li" to={`/sellers/:${user.id}`}>Cửa hàng</Link>
-              <Link className="dropdown_menu_li" to={`/sellers/${user.id}/products`}>Đăng sản phẩm</Link>
+              <Link className="dropdown_menu_li" to={`/sellers/${user.id}/profile`}>Cửa hàng</Link>
+              <Link className="dropdown_menu_li" to={`/sellers/${user.id}/add-product`}>Đăng sản phẩm</Link>
               <Link className="dropdown_menu_li" onClick={logout}>Đăng xuất</Link>
             </ul>
           </div>

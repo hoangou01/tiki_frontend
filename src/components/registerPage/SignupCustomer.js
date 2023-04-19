@@ -18,50 +18,52 @@ import API, { endpoints } from "../../configs/API";
 import setErr from "../../layouts/Error";
 import LoadingSpinner from "../LoadingSpinner";
 import InputItem from "../../layouts/InputItem";
-import { Axios } from "axios";
+import axios, { Axios } from "axios";
 function SignupCustomer() {
   const [customer, setCustomer] = useState({
     firstName: "",
     lastName: "",
     username: "",
     email:"",
+    gender:"",
     password: "",
     phone: "",
     confirmPassword: "",
     is_customer: true,
     is_seller: false,
   });
-  const image = useRef();
+
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [uploadFile, setUploadFile] = useState("");
   const [cloudinaryImage, setCloudinaryImage] = useState("");
+  const url = "";
   const nav = useNavigate();
   var format = /^[!#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
   const register = (evt) => {
     evt.preventDefault();
 
     const handleUpload = async() => {
-      alert("uploadFile");
       const formData = new FormData();
       formData.append("file", uploadFile);
       formData.append("upload_preset", "qqvyn34x");
-
-      await Axios.post(
+      formData.append("cloud_name","hm-findingjob")
+      await axios.post(
         "https://api.cloudinary.com/v1_1/hm-findingjob/image/upload",
         formData
       ).then((response) => {
-          alert("cloudynary res");
-          setCloudinaryImage(response.data.secure_url);
+          let url = (response.data.secure_url).toString()
+          process(url);
         })
         .catch((error) => {
-          alert("cloudynary err");
+          alert(error);
           setErr(error);
+          
         });
     };
 
-    const process = async () => {
-      alert(customer.firstName + customer.lastName);
+    const process = async (url) => {
+      alert(customer.firstName + customer.lastName + url);
       try {
         
         let form = new FormData();
@@ -73,16 +75,17 @@ function SignupCustomer() {
         form.append("phone", customer.phone);
         form.append("is_customer", customer.is_customer);
         form.append("is_seller", customer.is_seller);
-        form.append("image", cloudinaryImage);
-
+        form.append("image", url);
+        
         // alert(customer.firstName + customer.lastName + customer.username+customer.phone+ customer.is_customer)
         // if (image.current.files.length > 0)
         //   form.append("image", image.current.files[0]);
 
         let res = await API.post(endpoints["register-customer"], form, {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            'content-type': 'multipart/form-data',
+          
+          }
         });
         if (res.status === 201) nav("/login/customer");
         else setErr("there is a error, please turn back a few minute!");
@@ -113,7 +116,7 @@ function SignupCustomer() {
     } else {
       setLoading(true);
       handleUpload();
-      process();
+      
     }
   };
 
@@ -203,6 +206,11 @@ function SignupCustomer() {
                 name="username"
                 type="text"
               />
+              <Form.Select onChange={setValue} name="gender" wrapperClass="mb-4">
+                  <option value={"Nam"}>Nam</option>
+                  <option value={"Nữ"}>Nữ</option>
+              </Form.Select>
+              <br></br>
               <InputItem
                 wrapperClass="mb-4"
                 label="Password"

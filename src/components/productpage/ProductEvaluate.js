@@ -13,7 +13,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import Seller from "./Seller";
 import { useSearchParams } from "react-router-dom";
 const ProductEvaluate = ({productId}) => {
-  const [productEvaluate, setproductEvaluate] = useEffect([]);
+  const [productEvaluate, setproductEvaluate] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // useEffect(() => {

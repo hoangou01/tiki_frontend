@@ -18,6 +18,7 @@ import API, { endpoints } from "../../configs/API";
 import { useRef } from "react";
 import setErr from "../../layouts/Error";
 import LoadingSpinner from "../LoadingSpinner";
+import axios from "axios";
 function SignupSeller() {
   const [seller, setSeller] = useState({
     firstName: "",
@@ -32,23 +33,45 @@ function SignupSeller() {
   const image = useRef();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+  const [uploadFile, setUploadFile] = useState("");
+  const [cloudinaryImage, setCloudinaryImage] = useState("");
   const nav = useNavigate();
   var format = /^[!#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
   const register = (evt) => {
     evt.preventDefault();
-
-    const process = async () => {
+    const handleUpload = async () => {
+      const formData = new FormData();
+      formData.append("file", uploadFile);
+      formData.append("upload_preset", "qqvyn34x");
+      formData.append("cloud_name", "hm-findingjob");
+      await axios
+        .post(
+          "https://api.cloudinary.com/v1_1/hm-findingjob/image/upload",
+          formData
+        )
+        .then((response) => {
+          let url = response.data.secure_url.toString();
+          process(url);
+        })
+        .catch((error) => {
+          alert(error);
+          setErr(error);
+        });
+    };
+    const process = async (url) => {
       try {
         let form = new FormData();
         form.append("first_name", seller.firstName);
         form.append("username", seller.username);
+        form.append("email", seller.username);
         form.append("password", seller.password);
         form.append("phone", seller.phone);
         form.append("is_customer", seller.is_customer);
         form.append("is_seller", seller.is_seller);
+        form.append("image", url);
         // if (image.current.files.length > 0)
         //   form.append("avatar", image.current.files[0]);
-        alert(seller.is_official)
+        alert(seller.is_official);
 
         let res = await API.post(endpoints["register-seller"], form, {
           headers: {
@@ -80,7 +103,8 @@ function SignupSeller() {
       setErr("password is not match!");
     else {
       setLoading(true);
-      process();
+      handleUpload();
+
     }
   };
 
@@ -147,11 +171,19 @@ function SignupSeller() {
                   id="form1"
                   type="text"
                 />
-                
-                <Form.Select onChange={setValue} name="is_official" wrapperClass="mb-4">
+
+                <Form.Select
+                  onChange={setValue}
+                  name="is_official"
+                  wrapperClass="mb-4"
+                >
                   <option disabled>is your shop official?</option>
-                  <option key={true} value={true}>yes</option>
-                  <option key={false} value={false}>no</option>
+                  <option key={true} value={true}>
+                    yes
+                  </option>
+                  <option key={false} value={false}>
+                    no
+                  </option>
                 </Form.Select>
                 <br></br>
                 <InputItem
@@ -172,7 +204,14 @@ function SignupSeller() {
                   id="form1"
                   type="password"
                 />
-                <InputItem label="avatar" type="file" ref={image} name="image" />
+                <label>Ảnh đại diện cửa hàng</label>
+                <br></br>
+                <input className=""
+                type="file"
+                onChange={(event) => {
+                  setUploadFile(event.target.files[0]);
+                }}
+              />
                 {err ? (
                   <>
                     <div className="text-danger" style={{ marginTop: "-20px" }}>
@@ -184,7 +223,7 @@ function SignupSeller() {
                 )}
                 {/* {err != ""?<><setErr err={err}/></>:""} */}
 
-                <Button className="w-100 mb-4" type="submit" size="md">
+                <Button className="w-100 mb-4 mt-5" type="submit" size="md">
                   sign up
                 </Button>
               </Form>

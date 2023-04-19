@@ -11,23 +11,25 @@ import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import Seller from "./Seller";
-const ProductDetail = ({productId}) => {
-  // const [productDetail, setproductDetail] = useEffect([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // useEffect(() => {
-  //   const loadProductDetail = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       var res = await API.get(endpoints["productDetail"](productId));
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //     }
-  //     setproductDetail(res.data);
-  //   };
+import { useParams } from "react-router-dom";
+const ProductDetail = () => {
+  const {productId} = useParams();
+  const [productDetail, setproductDetail] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const loadProductDetail = async () => {
+      setLoading(true);
+      try {
+        var res = await API.get(endpoints["product-detail"](productId));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+      setproductDetail(res.data);
+    };
 
-  //   loadProductDetail();
-  // }, [productId]);
+    loadProductDetail();
+  }, [productId]);
 
   return (
     <>

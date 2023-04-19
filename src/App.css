@@ -1337,6 +1337,7 @@ a{
   background-color: #f3f1f1;
   /* padding: 4px 8px; */
   width: 100%;
+  min-width: 200px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 
