@@ -20,6 +20,7 @@ const Header = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [user, dispatch] = useContext(MyUserContext);
+  const [q, setQ] = useState("")
   useEffect(() => {
     const loadCategories = async () => {
       setIsLoading(true);
@@ -34,7 +35,10 @@ const Header = () => {
 
     loadCategories();
   }, []);
+  const search = (e)=>{
+    e.preventDefaul();
 
+  }
   const logout = () => {
     dispatch({
       type: "logout",
@@ -130,6 +134,7 @@ const Header = () => {
                 </div>
               </Col>
               <Col md={6}>
+                <Form onSubmit={search}>
                 <div id="search_section">
                   <div className="form_search">
                     <img
@@ -141,12 +146,15 @@ const Header = () => {
                       type="text"
                       className="form_search_input"
                       placeholder="Bạn tìm gì hôm nay"
+                      value={q}
+                      onChange={e => setQ(e.target.value)}
                     />
-                    <button className="btn_search text-primary">
+                    <Button type="submit" className="btn_search text-primary">
                       Tìm kiếm
-                    </button>
+                    </Button>
                   </div>
                 </div>
+                </Form>
               </Col>
               <Col md={4}>
                 <div id="icon_header">

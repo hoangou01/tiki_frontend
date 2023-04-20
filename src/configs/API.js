@@ -2,7 +2,7 @@ import axios from "axios";
 import cookie from "react-cookies";
 export const endpoints = {
     "categories": `/categories/`,
-    "listcategories": `/listcategories/`,
+    "category-products":  `/products/`,
     "products":(cateId)=> `/categories/${cateId}/products/`,
     "recommendproducts":(cateId)=> `/categories/${cateId}/recommend-products/`,
     "product-detail":(productId) => `/products/${productId}/`,

@@ -24,6 +24,7 @@ import LoginSeller from "./components/loginPage/LoginSeller";
 import { MyUserContext } from "./configs/MyContext";
 import ProductSeller from "./components/sellerpage/ProductSeller";
 import SellerInfo from "./components/sellerpage/SellerInfo";
+import FilterProduct from "./layouts/FilterProduct";
 function App() {
   const [user, dispatch] = useReducer(
     myUserReducer,
@@ -37,6 +38,7 @@ function App() {
           <Routes>
             <Route path="/" Component={Main} />
             <Route path="/categories/:cateId/products/:productId/" Component={Product} />
+            <Route path="/categories/:cateId/" Component={FilterProduct} />
             <Route path="/sellers/:sellerId/" Component={SellerPage}>
               <Route path="profile" Component={SellerInfo} />
               <Route path="products" Component={ProductSeller} />
