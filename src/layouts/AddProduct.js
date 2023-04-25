@@ -13,7 +13,7 @@ import React, { Component } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useNavigate, useParams } from "react-router-dom";
 import InputItem from "./InputItem";
-
+// import CKEditor from "./CkEditor";
 const AddProduct = () => {
   //   const [seller, setSeller] = useEffect([]);
   //   useEffect(() => {
@@ -25,6 +25,13 @@ const AddProduct = () => {
   //     loadSeller();
   //   }, []);
   // load categories
+  
+  const image = useRef();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const { sellerId } = useParams();
+  const nav = useNavigate();
   const [product, setProduct] = useState({
     description: "",
     name: "",
@@ -33,16 +40,10 @@ const AddProduct = () => {
     quantity: null,
     salable_quantity: null,
     discount: null,
-    image: "",
-    category: null,
+    image: "https://res.cloudinary.com/hm-findingjob/image/upload/v1681809298/iu5uoqk4pg0inb3g9m5b.jpg",
+    category: 1,
+    seller:35,
   });
-  const image = useRef();
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState("");
-  const { sellerId } = useParams();
-  const nav = useNavigate();
-
   useEffect(() => {
     const loadCategories = async () => {
       setLoading(true);
@@ -57,7 +58,8 @@ const AddProduct = () => {
 
     loadCategories();
   }, []);
-  const PostProduct = () => {
+  const PostProduct = (e) => {
+    e.preventDefault();
     const process = async () => {
       try {
         let form = new FormData();
@@ -68,12 +70,14 @@ const AddProduct = () => {
         form.append("quantity", product.quantity);
         form.append("salable_quantity", product.quantity);
         form.append("discount", product.discount);
-        form.append("category",product.category);
+        form.append("category",1);
         form.append("seller",sellerId);
-        console.log(sellerId)
+        form.append("image", product.image);
+        form.append("seller", product.seller);
+
+        console.log(product)
         // alert(customer.firstName + customer.lastName + customer.username+customer.phone+ customer.is_customer)
         // if (image.current.files.length > 0)
-        //   form.append("image", image.current.files[0]);
 
         let res = await authAPI().post(endpoints["add-product"](sellerId), form);
         if (res.status === 201) {
@@ -91,7 +95,7 @@ const AddProduct = () => {
         setLoading(false);
       }
     };
-    if (product.name == "") {
+    if (product.name === "") {
       setErr("please input name of product");
     } else if (product.base_price <= 0) {
       setErr("price of product isn't allow zero!");
@@ -112,7 +116,7 @@ const AddProduct = () => {
       </div>
     </>
   );
-  if (err == "") {
+  if (err === "") {
     renderErr = (
       <>
         <div className="d-none text-danger">{err}</div>
@@ -183,7 +187,7 @@ const AddProduct = () => {
               type="number"
             />
 
-            <Form.Select
+            {/* <Form.Select
               name="category"
               onChange={setValue}
               aria-label="Default select example"
@@ -192,7 +196,7 @@ const AddProduct = () => {
               {categories.map((c) => (
                 <option value={c.id}>{c.categoryname}</option>
               ))}
-            </Form.Select>
+            </Form.Select> */}
             {/* <InputItem label="ảnh sản phẩm" type="file" ref={image} /> */}
             {renderErr}
             <Button variant="primary" type="submit">

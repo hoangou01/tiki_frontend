@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -27,13 +28,13 @@ const Categories = () => {
               <strong className="content-list-brand-tittle">Danh mục</strong>
               <ul className="content-list-brand_ul">
                 {categories.map(c=> 
-                    <li><a href="">
+                    <li><Link to={`/products/?cateId=${c.id}`}>
                       
                     <img
-                      src={(c.image === null) ? defaultImage : c.image}
+                      src={(c.image === null) ? defaultImage : `http://127.0.0.1:8000/`+c.image}
                       alt=""/>
                     {c.categoryname}
-                  </a></li>
+                  </Link></li>
                   )}
                 
               </ul>

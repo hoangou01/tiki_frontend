@@ -37,12 +37,22 @@ const LoginCustomer = ()=> {
         cookie.save('access-token', res.data.access_token)
 
         let user = await authAPI().get(endpoints['current-customer'])
-        cookie.save('current-user', user.data)
+        if(user.data.is_customer === true){
+          cookie.save('current-user', user.data)
 
-        dispatch({
-          "type": "login",
-          "payload": user.data
-        })
+          dispatch({
+            "type": "login",
+            "payload": user.data
+          })
+          
+        }else{
+          dispatch({
+            type: "logout",
+          });
+          setErr("không tìm thấy tài khoản!")
+          user = null;
+        }
+        
       } catch (ex) {
         alert(ex)
         setErr('Username hoặc Password không hợp lệ!')
@@ -74,8 +84,8 @@ const LoginCustomer = ()=> {
       </>
     )
   }
-  if (user !== null)
-        return <Navigate to="/" />
+  if(user !== null)
+    return <Navigate to="/" />
   const renderLoginCustomer = (
     <>
       <MDBContainer fluid>

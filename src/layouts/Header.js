@@ -13,7 +13,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MyUserContext } from "../configs/MyContext";
 import { useContext } from "react";
 const Header = () => {
@@ -21,6 +21,7 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, dispatch] = useContext(MyUserContext);
   const [q, setQ] = useState("")
+  const nav = useNavigate()
   useEffect(() => {
     const loadCategories = async () => {
       setIsLoading(true);
@@ -35,8 +36,11 @@ const Header = () => {
 
     loadCategories();
   }, []);
-  const search = (e)=>{
-    e.preventDefaul();
+  const searchKey = (e)=>{
+    // e.preventDefaul();
+    // nav(`/products/?kw=${q}`);
+    // <Link to={`/products/?kw=${q}`}></Link>
+    
 
   }
   const logout = () => {
@@ -65,9 +69,10 @@ const Header = () => {
           Tài khoản
         </Link>
       </li>
+      
     </>
   );
-  if (user !== null && user.is_customer == true) {
+  if (user !== null && user.is_customer === true) {
     
     infoUser = (
       <>
@@ -77,7 +82,7 @@ const Header = () => {
               src={user.image}
               // alt={user.image}
             />
-            {user.username}
+            {user.first_name}
            
           </Link>
           <div className="dropdown_menu">
@@ -89,12 +94,13 @@ const Header = () => {
             </ul>
           </div>
         </li>
+        
 
         
       </>
     );
   }
-  if (user !== null && user.is_seller == true) {
+  if (user !== null && user.is_seller === true) {
 
     infoUser = (
       <>
@@ -111,6 +117,7 @@ const Header = () => {
             <ul>
               <Link className="dropdown_menu_li" to={`/sellers/${user.id}/profile`}>Cửa hàng</Link>
               <Link className="dropdown_menu_li" to={`/sellers/${user.id}/add-product`}>Đăng sản phẩm</Link>
+              <Link className="dropdown_menu_li" to={`/sellers/${user.id}/charts`}>Thống kê</Link>
               <Link className="dropdown_menu_li" onClick={logout}>Đăng xuất</Link>
             </ul>
           </div>
@@ -134,7 +141,7 @@ const Header = () => {
                 </div>
               </Col>
               <Col md={6}>
-                <Form onSubmit={search}>
+                <Form onSubmit={searchKey}>
                 <div id="search_section">
                   <div className="form_search">
                     <img
@@ -149,9 +156,9 @@ const Header = () => {
                       value={q}
                       onChange={e => setQ(e.target.value)}
                     />
-                    <Button type="submit" className="btn_search text-primary">
+                    <Link  to={`/products/?kw=${q}`} style={{paddingLeft:'20px'}} className=" btn_search text-primary">
                       Tìm kiếm
-                    </Button>
+                    </Link>
                   </div>
                 </div>
                 </Form>

@@ -7,17 +7,20 @@ export const endpoints = {
     "recommendproducts":(cateId)=> `/categories/${cateId}/recommend-products/`,
     "product-detail":(productId) => `/products/${productId}/`,
     "sellers":`/sellers/`,
+    "brands":'/brands/',
     "seller-detail":(sellerId)=> `/sellers/${sellerId}/current-user`,
     "customer-detail":(customerId) =>`/customers/${customerId}`,
     "order-detail":(orderId)=>`/orders/${orderId}`,
-    'comments':(productId) =>`productDetails/${productId}/evaluates/`,
+    'comments':(productId) =>`products/${productId}/evaluations/`,
     "register-customer":"/customer/",
     "register-seller":"/seller/",
     "login": '/o/token/',
     "current-customer":'/customers/current-user/',
     "current-seller":'/sellers/current-user/',
-    "add-product":(sellerId)=>`/seller/${sellerId}/`,
-    "seller-product":(sellerId) => `/sellers/${sellerId}/products/`
+    "add-product":(sellerId)=>`/sellers/${sellerId}/products/`,
+    "seller-product":(sellerId) => `/sellers/${sellerId}/products/`,
+    "report-products":(sellerId) => `/sellers/${sellerId}/report-product/`,
+    "ramdom-category":"/category-ramdom/",
 
     
 }

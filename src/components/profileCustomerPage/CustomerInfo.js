@@ -12,23 +12,33 @@ import {
 } from "mdb-react-ui-kit";
 import LoadingSpinner from "../LoadingSpinner";
 import { Form } from "react-bootstrap";
+import { authAPI, endpoints } from "../../configs/API";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { MyUserContext } from "../../configs/MyContext";
+import { useState } from "react";
 const CustomerInfo = () => {
-  //   const [customer, setCustomer] = useState([]);
-  //   const [isLoading, setIsLoading] = useState(false);
-  //   useEffect(() => {
-  //     const loadCustomer = async () => {
-  //       setIsLoading(true);
-  //       try {
-  //         var res = await API.get(endpoints["customer-detail"(customerId)]);
-  //       } catch (error) {
-  //         setIsLoading(false);
-  //       }
-  //       setIsLoading(false);
-  //       setCustomer(res.data);
-  //     };
+    const [customer, setCustomer] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [user, dispatch] = useContext(MyUserContext);
+    const {customerId} = useParams();
+    
+    // useEffect(() => {
+    //   const loadCustomer = async () => {
+    //     setLoading(true);
+    //     try {
+    //       var res = await authAPI().get(endpoints["customer-detail"](customerId));
+    //     } catch (error) {
+    //       setLoading(false);
+    //     }
+    //     setLoading(false);
+    //     setCustomer(res.data);
+    //   };
 
-  //     loadCustomer();
-  //   }, []);
+    //   loadCustomer();
+    // }, []);
+    console.log(user)
   const renderProfileCustomer = (
     <>
       <section className="vh-50">
@@ -47,13 +57,13 @@ const CustomerInfo = () => {
                       }}
                     >
                       <MDBCardImage
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                        src={`http://127.0.0.1:8000/static/`+user.image}
                         alt="Avatar"
                         className="my-5"
                         style={{ width: "80px" }}
                         fluid
                       />
-                      <MDBTypography tag="h5">Marie Horwitz</MDBTypography>
+                      <MDBTypography tag="h5">{user.username}</MDBTypography>
                       <MDBCardText>Web Designer</MDBCardText>
                       <MDBIcon far icon="edit mb-5" />
                     </MDBCol>
@@ -65,25 +75,26 @@ const CustomerInfo = () => {
                           <MDBCol size="3" className="mb-3">
                             <MDBTypography tag="h6">Email</MDBTypography>
                             <MDBCardText className="text-muted">
-                              hoangou@gmail.com
+                            {user.username}
                             </MDBCardText>
                           </MDBCol>
                           <MDBCol size="3" className="mb-3">
                             <MDBTypography tag="h6">Phone</MDBTypography>
                             <MDBCardText className="text-muted">
-                              123 456 789
+                            {user.phone? user.phone: 'không có'}
                             </MDBCardText>
                           </MDBCol>
                           <MDBCol size="3" className="mb-3">
                             <MDBTypography tag="h6">Gender</MDBTypography>
                             <MDBCardText className="text-muted">
-                              Nam
+                            {user.gender? user.gender: 'không có'}
                             </MDBCardText>
                           </MDBCol>
                           <MDBCol size="3" className="mb-3">
                             <MDBTypography tag="h6">Day of birth</MDBTypography>
                             <MDBCardText className="text-muted">
-                              01/12/2001
+                            {user.DOB? user.DOB: 'không có'}
+
                             </MDBCardText>
                           </MDBCol>
                         </MDBRow>
@@ -94,7 +105,7 @@ const CustomerInfo = () => {
                           <MDBCol size="12" className="mb-3">
                             <MDBTypography tag="h6">Address</MDBTypography>
                             <MDBCardText className="text-muted">
-                              229/76/16 Tây Thạnh , tphcm
+                            {user.address? user.address: 'không có'}
                             </MDBCardText>
                           </MDBCol>
                         </MDBRow>

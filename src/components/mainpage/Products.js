@@ -11,24 +11,9 @@ import API, { endpoints } from "../../configs/API";
 import React, { Component } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import Items from "../../layouts/items";
+import { Link } from "react-router-dom";
 
-const ProductMain = () => {
-    // const [products, setProducts] = useState([]);
-    // const [isLoading, setIsLoading] = useState(false);
-    // useEffect(() => {
-    //   const loadProduct = async () => {
-    //     setIsLoading(true);
-    //     try {
-    //       var res = await API.get(endpoints["productDetails"(cateId)]);
-    //     } catch (error) {
-    //       setIsLoading(false);
-    //     }
-    //     setIsLoading(false);
-    //     setProducts(res.data);
-    //   };
-  
-    //   loadProduct();
-    // }, []);
+const ProductMain = ({ cateRamdom, product }) => {
   const renderProductMain = (
     <>
       <div className="content-main">
@@ -158,33 +143,23 @@ const ProductMain = () => {
                         <span>Dành cho bạn</span>
                       </div>
                     </Col>
-                    <Col md={2}>
-                      <div className="recommend-item">
-                        <img
-                          src="https://salt.tikicdn.com/cache/w100/ts/personalish/f9/27/b5/3a8e2286a1c8fb91b67acc5ee35f82f0.png.webp"
-                          alt=""
-                        />
-                        <span>Dành cho bạn</span>
-                      </div>
-                    </Col>
-                    <Col md={2}>
-                      <div className="recommend-item">
-                        <img
-                          src="https://salt.tikicdn.com/cache/w100/ts/personalish/f9/27/b5/3a8e2286a1c8fb91b67acc5ee35f82f0.png.webp"
-                          alt=""
-                        />
-                        <span>Dành cho bạn</span>
-                      </div>
-                    </Col>
-                    <Col md={2}>
-                      <div className="recommend-item">
-                        <img
-                          src="https://salt.tikicdn.com/cache/w100/ts/personalish/f9/27/b5/3a8e2286a1c8fb91b67acc5ee35f82f0.png.webp"
-                          alt=""
-                        />
-                        <span>Dành cho bạn</span>
-                      </div>
-                    </Col>
+                    {cateRamdom.map((c) => (
+                      <Col md={2}>
+                        <Link to={`/?cateId=${c.id}`}>
+                          <div className="recommend-item">
+                            <img
+                              src={
+                                c.image.startsWith("http")
+                                  ? c.image
+                                  : `http://127.0.0.1:8000/` + c.image
+                              }
+                              alt=""
+                            />
+                            <span>{c.categoryname}</span>
+                          </div>
+                        </Link>
+                      </Col>
+                    ))}
                   </Row>
                 </div>
               </div>
@@ -192,9 +167,11 @@ const ProductMain = () => {
             <Col md={12}>
               <div className="recommend-list_product">
                 <Row>
-                  <Col md={2}>
-                    <Items obj={1} />
-                  </Col>
+                  {product.map((p) => (
+                    <Col md={2}>
+                      <Items obj={p} typeCol={2} />
+                    </Col>
+                  ))}
                 </Row>
               </div>
             </Col>
@@ -202,15 +179,10 @@ const ProductMain = () => {
         </div>
       </div>
     </>
-  )
+  );
   return (
-
-    
-        /* {isLoading ? <LoadingSpinner /> : renderProductMain} */
-        <>
-            {renderProductMain}
-        </>
-   
-  )
+    /* {isLoading ? <LoadingSpinner /> : renderProductMain} */
+    <>{renderProductMain}</>
+  );
 };
-export default ProductMain
+export default ProductMain;

@@ -1,18 +1,23 @@
 import { Link } from "react-router-dom";
-
-const Items = ({obj}) => {
-  console.log(obj)
-  let url = `productDetails/${obj}`;
+import SetImage from "./SetImage";
+const Items = ({obj,typeCol}) => {
+  
+  let url = `/categories/${obj.category}/products/${obj.id}/`;
   return (
     <>
       <Link to={url} className='text-dark shadow_style'>
-        <div className="recommend-product shadow_style">
+        <div className="recommend-product mt-5 shadow_style">
           <div className="header_product">
             <picture>
-              <img
+              {typeCol === 2 ? (<img
+                src={`http://127.0.0.1:8000/` + obj.image}
+                alt="" style={{width:"150px", height:"150px"}}
+              />):(
+                <img
                 src={`http://127.0.0.1:8000/` + obj.image}
                 alt="" style={{width:"180px", height:"180px"}}
               />
+              )}
             </picture>
           </div>
           <div className="product_info">

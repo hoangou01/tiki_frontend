@@ -12,23 +12,8 @@ import React, { Component } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import Seller from "./Seller";
 import Items from "../../layouts/items";
-const RecommendProduct = ({ cateId }) => {
-  // const [RecommendProduct, setRecommendProduct] = useEffect([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // useEffect(() => {
-  //   const loadRecommendProduct = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       var res = await API.get(endpoints["recommendproducts"](cateId));
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //     }
-  //     setRecommendProduct(res.data);
-  //   };
-
-  //   loadRecommendProduct();
-  // }, [cateId]);
+const RecommendProduct = ({ obj }) => {
+  
   const renderRecommendProduct = (
     <>
       <div class="recommend-product-section">

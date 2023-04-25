@@ -30,21 +30,31 @@ function LoginSeller() {
         let res = await API.post(endpoints['login'], {
           "username": username,
           "password": password,
-          "client_id": "",
-          "client_secret": "",
+          "client_id": "P1DzxRpaj9KeFVfjtYKt6r6vuUC1fpi0D39Tdv2n",
+          "client_secret": "AiL1nBbTLTVecQL5PTbCuHRuLKZN6qQgo9K0TblulO1VgFfeoSl7jL1tqEMuBy9q7BHUWsMOSlFTGeHkJ1kXdhiGo4pqSstIg2La0jgiZs1osutn4Qy0G8mwi6Q03tvD",
           "grant_type": "password"
         })
 
         cookie.save('access-token', res.data.access_token)
 
-        let user = await authAPI().get(endpoints['current-user'])
-        cookie.save('current-user', user.data)
+        let user = await authAPI().get(endpoints['current-seller'])
+        if(user.data.is_seller === true){
+          cookie.save('current-user', user.data)
 
-        dispatch({
-          "type": "login",
-          "payload": user.data
-        })
+          dispatch({
+            "type": "login",
+            "payload": user.data
+          })
+          
+        }else{
+          dispatch({
+            type: "logout",
+          });
+          setErr("không tìm thấy tài khoản!")
+          user = null;
+        }
       } catch (ex) {
+        alert(ex)
         console.error(ex)
         setErr('Username hoặc Password không hợp lệ!')
       } finally {
@@ -63,18 +73,19 @@ function LoginSeller() {
     }
   }
 
-  // var renderErr = (
-  //   <>
-  //     <div className="text-danger" style={{ marginTop: '-20px' }}>{err}</div>
-  //   </>
-  // )
-  // if (err == '') {
-  //   renderErr = (
-  //     <>
-  //       <div className="d-none text-danger">{err}</div>
-  //     </>
-  //   )
-  // }
+  var renderErr = (
+    <>
+      <div className="text-danger" style={{ marginTop: '-20px' }}>{err}</div>
+    </>
+  )
+  if (err == '') {
+    renderErr = (
+      <>
+        <div className="d-none text-danger">{err}</div>
+      </>
+    )
+  }
+  
   if (user !== null)
         return <Navigate to="/" />
   const renderLoginSeller = (
@@ -94,7 +105,7 @@ function LoginSeller() {
               <MDBInput wrapperClass='mb-4' onChange={e=> setUsername(e.target.value)} label='Email address' id='formControlLg' type='text' size="lg" />
               <MDBInput wrapperClass='mb-4' onChange={e=> setPassword(e.target.value)} label='Password' id='formControlLg' type='password' size="lg" />
 
-              <setErr err={err}/>
+              {renderErr}
               <div className="d-flex justify-content-between mt-5 mb-4">
                 <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
                 <a href="!#">Forgot password?</a>
