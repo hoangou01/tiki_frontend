@@ -12,40 +12,59 @@ import {
 } from "mdb-react-ui-kit";
 import LoadingSpinner from "../LoadingSpinner";
 import { Form } from "react-bootstrap";
-import { authAPI, endpoints } from "../../configs/API";
+import API, { authAPI, endpoints } from "../../configs/API";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { MyUserContext } from "../../configs/MyContext";
 import { useState } from "react";
+import InputItem from "../../layouts/InputItem";
 const CustomerInfo = () => {
-    const [customer, setCustomer] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [user, dispatch] = useContext(MyUserContext);
-    const {customerId} = useParams();
-    
-    // useEffect(() => {
-    //   const loadCustomer = async () => {
-    //     setLoading(true);
-    //     try {
-    //       var res = await authAPI().get(endpoints["customer-detail"](customerId));
-    //     } catch (error) {
-    //       setLoading(false);
-    //     }
-    //     setLoading(false);
-    //     setCustomer(res.data);
-    //   };
+  const [customer, setCustomer] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [user, dispatch] = useContext(MyUserContext);
+  const { customerId } = useParams();
+  const [userUpdate, setUserUpdate] = useState({
+    DOB: user.DOB ? user.DOB : '',
+    gender: user.gender ? user.gender : '',
+    address: user.address ? user.address : '',
+    phone: user.phone ? user.phone : ''
 
-    //   loadCustomer();
-    // }, []);
-    console.log(user)
+  })
+  // useEffect(() => {
+  //   const loadCustomer = async () => {
+  //     setLoading(true);
+  //     try {
+  //       var res = await authAPI().get(endpoints["customer-detail"](customerId));
+  //     } catch (error) {
+  //       setLoading(false);
+  //     }
+  //     setLoading(false);
+  //     setCustomer(res.data);
+  //   };
+
+  //   loadCustomer();
+  // }, []);
+  const setValue = (e) => {
+    const { name, value } = e.target;
+    setUserUpdate((current) => ({ ...current, [name]: value }));
+  };
+  const updateUser = () => {
+    const process = async () => {
+      let res = await authAPI().post(endpoints['update-user'](customerId), {
+        // 'image':obj.imageUrl,
+        // 'first_name':obj.familyName,
+        // 'last_name':obj.givenName
+      })
+    }
+  }
   const renderProfileCustomer = (
     <>
       <section className="vh-50">
         <MDBContainer className="py-5 h-100">
           <MDBRow className="align-items-center h-100">
             <MDBCol lg="12" className="mb-4 mb-lg-0">
-              <Form>
+              <Form onSubmit={updateUser}>
                 <MDBCard className="mb-3" style={{ borderRadius: ".5rem" }}>
                   <MDBRow className="g-0">
                     <MDBCol
@@ -57,9 +76,9 @@ const CustomerInfo = () => {
                       }}
                     >
                       <MDBCardImage
-                        src={`http://127.0.0.1:8000/static/`+user.image}
+                        src={user.image.startsWith('http') ? user.image : 'http://127.0.0.1:8000/' + user.image}
                         alt="Avatar"
-                        className="my-5"
+                        className="my-5 rounded-circle"
                         style={{ width: "80px" }}
                         fluid
                       />
@@ -68,60 +87,7 @@ const CustomerInfo = () => {
                       <MDBIcon far icon="edit mb-5" />
                     </MDBCol>
                     <MDBCol md="10">
-                      <MDBCardBody className="p-4">
-                        <MDBTypography tag="h6">Information</MDBTypography>
-                        <hr className="mt-0 mb-4" />
-                        <MDBRow className="pt-1">
-                          <MDBCol size="3" className="mb-3">
-                            <MDBTypography tag="h6">Email</MDBTypography>
-                            <MDBCardText className="text-muted">
-                            {user.username}
-                            </MDBCardText>
-                          </MDBCol>
-                          <MDBCol size="3" className="mb-3">
-                            <MDBTypography tag="h6">Phone</MDBTypography>
-                            <MDBCardText className="text-muted">
-                            {user.phone? user.phone: 'không có'}
-                            </MDBCardText>
-                          </MDBCol>
-                          <MDBCol size="3" className="mb-3">
-                            <MDBTypography tag="h6">Gender</MDBTypography>
-                            <MDBCardText className="text-muted">
-                            {user.gender? user.gender: 'không có'}
-                            </MDBCardText>
-                          </MDBCol>
-                          <MDBCol size="3" className="mb-3">
-                            <MDBTypography tag="h6">Day of birth</MDBTypography>
-                            <MDBCardText className="text-muted">
-                            {user.DOB? user.DOB: 'không có'}
-
-                            </MDBCardText>
-                          </MDBCol>
-                        </MDBRow>
-
-                        <MDBTypography tag="h6">Information</MDBTypography>
-                        <hr className="mt-0 mb-4" />
-                        <MDBRow className="pt-1">
-                          <MDBCol size="12" className="mb-3">
-                            <MDBTypography tag="h6">Address</MDBTypography>
-                            <MDBCardText className="text-muted">
-                            {user.address? user.address: 'không có'}
-                            </MDBCardText>
-                          </MDBCol>
-                        </MDBRow>
-
-                        <div className="d-flex justify-content-start">
-                          <a href="#!">
-                            <MDBIcon fab icon="facebook me-3" size="lg" />
-                          </a>
-                          <a href="#!">
-                            <MDBIcon fab icon="twitter me-3" size="lg" />
-                          </a>
-                          <a href="#!">
-                            <MDBIcon fab icon="instagram me-3" size="lg" />
-                          </a>
-                        </div>
-                      </MDBCardBody>
+                      <Form/>
                     </MDBCol>
                   </MDBRow>
                 </MDBCard>

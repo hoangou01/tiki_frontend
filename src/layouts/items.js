@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import SetImage from "./SetImage";
-const Items = ({obj,typeCol}) => {
-  
+import { NumericFormat } from 'react-number-format';
+import Numeral from 'react-numeral';
+const Items = ({ obj, typeCol }) => {
+  const defaultImage = 'https://res.cloudinary.com/hm-findingjob/image/upload/v1683263922/zvubofsvwo50q41bgpdh.jpg'
   let url = `/categories/${obj.category}/products/${obj.id}/`;
   return (
     <>
@@ -10,13 +12,13 @@ const Items = ({obj,typeCol}) => {
           <div className="header_product">
             <picture>
               {typeCol === 2 ? (<img
-                src={`http://127.0.0.1:8000/` + obj.image}
-                alt="" style={{width:"150px", height:"150px"}}
-              />):(
+                src={obj.image.startsWith('http')? obj.image :  'http://127.0.0.1:8000/' + obj.image }                
+                  alt="" style={{ width: "150px", height: "150px" }}
+              />) : (
                 <img
-                src={`http://127.0.0.1:8000/` + obj.image}
-                alt="" style={{width:"180px", height:"180px"}}
-              />
+                  src={obj.image.startsWith('http')? obj.image : 'http://127.0.0.1:8000/' + obj.image}
+                  alt="" style={{ width: "180px", height: "180px" }}
+                />
               )}
             </picture>
           </div>
@@ -26,7 +28,7 @@ const Items = ({obj,typeCol}) => {
             </div>
             <div className="product_rate_sold">
               <div className="product_rate">
-                5
+                {obj.rating == null ? 5 : obj.rating}
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
@@ -37,7 +39,7 @@ const Items = ({obj,typeCol}) => {
                   height="14"
                   width="14"
                   xmlns="http://www.w3.org/2000/svg"
-                  //   style="{{color: rgb(253, 216, 54)}}"
+                //   style="{{color: rgb(253, 216, 54)}}"
                 >
                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
                 </svg>
@@ -47,7 +49,10 @@ const Items = ({obj,typeCol}) => {
               </div>
             </div>
             <div className="product_price">
-              <span>{obj.base_price}đ</span>
+              <span><Numeral
+        value={obj.price_discount}
+        format={"0,0"}
+      />đ</span>
               <span className="discount"> -{obj.discount}%</span>
             </div>
             <div className="product_shipment"></div>

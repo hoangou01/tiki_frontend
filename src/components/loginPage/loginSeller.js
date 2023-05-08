@@ -11,11 +11,14 @@ import {
   from 'mdb-react-ui-kit';
 import { Form } from 'react-bootstrap';
 import LoadingSpinner from '../LoadingSpinner';
-import API , {authAPI,endpoints} from '../../configs/API';
+import API, { authAPI, endpoints } from '../../configs/API';
 import cookie from "react-cookies"
 import { MyUserContext } from '../../configs/MyContext';
 import { Navigate } from 'react-router-dom';
 import setErr from '../../layouts/Error';
+import { useEffect } from 'react';
+import { gapi } from 'gapi-script';
+import GoogleLogin from 'react-google-login';
 function LoginSeller() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -38,15 +41,15 @@ function LoginSeller() {
         cookie.save('access-token', res.data.access_token)
 
         let user = await authAPI().get(endpoints['current-seller'])
-        if(user.data.is_seller === true){
+        if (user.data.is_seller === true || user.data.provider === null) {
           cookie.save('current-user', user.data)
 
           dispatch({
             "type": "login",
             "payload": user.data
           })
-          
-        }else{
+
+        } else {
           dispatch({
             type: "logout",
           });
@@ -72,7 +75,108 @@ function LoginSeller() {
       process()
     }
   }
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: '76223967305-r9itrvl9fhsgkkvbgo8hbdglt65a7kn8.apps.googleusercontent.com',
+        scope: ""
+      })
+    }
+    gapi.load('client:auth2', start);
 
+  })
+  const onSuccess = (resGoogle) => {
+    console.log(resGoogle)
+    const process = async (obj) => {
+      alert(obj.email)
+      setLoading(true)
+
+      let res = await API.post(endpoints['login'], {
+        "username": obj.email,
+        "password": "1951012031z",
+        "client_id": "P1DzxRpaj9KeFVfjtYKt6r6vuUC1fpi0D39Tdv2n",
+        "client_secret": "AiL1nBbTLTVecQL5PTbCuHRuLKZN6qQgo9K0TblulO1VgFfeoSl7jL1tqEMuBy9q7BHUWsMOSlFTGeHkJ1kXdhiGo4pqSstIg2La0jgiZs1osutn4Qy0G8mwi6Q03tvD",
+        "grant_type": "password"
+      })
+
+      cookie.save('access-token', res.data.access_token)
+
+      let user = await authAPI().get(endpoints['current-customer'])
+      if (user.data.is_seller === true || user.data.provider === 'Google') {
+        cookie.save('current-user', user.data)
+
+        dispatch({
+          "type": "login",
+          "payload": user.data
+        })
+
+      } else {
+        dispatch({
+          type: "logout",
+        });
+        setErr("không tìm thấy tài khoản bán hàng!")
+        user = null;
+      }
+
+    }
+    const registerGoogleUser = async (obj) => {
+      try {
+        const form = new FormData();
+        form.append("first_name", obj.familyName);
+        form.append("last_name", obj.givenName);
+        form.append("username", obj.email);
+        form.append("email", obj.email);
+        form.append("password", "1951012031z");
+        form.append("is_customer", false);
+        form.append("is_seller", true);
+        form.append("image", obj.imageUrl);
+        form.append("provider", "Google");
+
+        let res = await API.post(endpoints["register-customer"], form, {
+          headers: {
+            'content-type': 'multipart/form-data',
+
+          }
+        });
+        if (res.status === 201) {
+          alert('register sucessfully')
+          process(obj);
+        }
+        else setErr("there is a error, please turn back a few minute!");
+      } catch (ex) {
+
+        let msg = "";
+        for (let e of Object.values(ex.response.data)) msg += `${e} `;
+
+        setErr(msg);
+        // setLoading(false)
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    try {
+      setLoading(true)
+      process(resGoogle.profileObj)
+    } catch (error) {
+      alert("khong co tai khoan")
+      // registerGoogleUser(resGoogle.profileObj);
+    } finally {
+      setLoading(false)
+      alert("hehe")
+      registerGoogleUser(resGoogle.profileObj);
+      process(resGoogle.profileObj)
+    }
+  }
+  const onFailure = (res) => {
+    console.log(res);
+  }
+  const onLogoutSuccess = (res) => {
+    console.log(res);
+  }
+  const responseFacebook = (res) => {
+    console.log(res);
+  }
   var renderErr = (
     <>
       <div className="text-danger" style={{ marginTop: '-20px' }}>{err}</div>
@@ -85,9 +189,9 @@ function LoginSeller() {
       </>
     )
   }
-  
+
   if (user !== null)
-        return <Navigate to="/" />
+    return <Navigate to="/" />
   const renderLoginSeller = (
     <>
       <MDBContainer fluid className="p-3 my-5">
@@ -102,8 +206,8 @@ function LoginSeller() {
 
 
             <Form onSubmit={login}>
-              <MDBInput wrapperClass='mb-4' onChange={e=> setUsername(e.target.value)} label='Email address' id='formControlLg' type='text' size="lg" />
-              <MDBInput wrapperClass='mb-4' onChange={e=> setPassword(e.target.value)} label='Password' id='formControlLg' type='password' size="lg" />
+              <MDBInput wrapperClass='mb-4' onChange={e => setUsername(e.target.value)} label='Email address' id='formControlLg' type='text' size="lg" />
+              <MDBInput wrapperClass='mb-4' onChange={e => setPassword(e.target.value)} label='Password' id='formControlLg' type='password' size="lg" />
 
               {renderErr}
               <div className="d-flex justify-content-between mt-5 mb-4">
@@ -118,14 +222,24 @@ function LoginSeller() {
               <p className="text-center fw-bold mx-3 mb-0">OR</p>
             </div>
 
-            <MDBBtn className="mb-4 w-100" size="lg" style={{ backgroundColor: '#3b5998' }}>
-              <MDBIcon fab icon="facebook-f" className="mx-2" />
-              Continue with facebook
+            <MDBBtn
+              tag="a"
+              color="none"
+              className="mb-4 w-100"
+              style={{ color: "#1266f1" }}
+            >
+              <GoogleLogin
+                clientId="76223967305-r9itrvl9fhsgkkvbgo8hbdglt65a7kn8.apps.googleusercontent.com"
+                buttonText="Login"
+                onSuccess={onSuccess}
+                onFailure={onFailure}
+                cookiePolicy={'single_host_origin'}
+              ></GoogleLogin>
             </MDBBtn>
 
-            <MDBBtn className="mb-4 w-100" size="lg" style={{ backgroundColor: '#55acee' }}>
-              <MDBIcon fab icon="twitter" className="mx-2" />
-              Continue with twitter
+            <MDBBtn className="mb-4 w-100" size="lg" style={{ backgroundColor: '#ccc' }}>
+              <MDBIcon fab icon="google" className="mx-2" />
+              Continue with Google
             </MDBBtn>
 
           </MDBCol>
@@ -137,7 +251,7 @@ function LoginSeller() {
   )
   return (
     <>
-      {loading ? <LoadingSpinner/> : renderLoginSeller}
+      {loading ? <LoadingSpinner /> : renderLoginSeller}
     </>
   );
 }

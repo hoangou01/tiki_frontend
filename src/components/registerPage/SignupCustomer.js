@@ -13,7 +13,7 @@ import {
 import { Button, Form } from "react-bootstrap";
 import { useRef } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API, { endpoints } from "../../configs/API";
 import setErr from "../../layouts/Error";
 import LoadingSpinner from "../LoadingSpinner";
@@ -282,7 +282,10 @@ function SignupCustomer() {
                 className="mx-3"
                 style={{ color: "#1266f1" }}
               >
-                <MDBIcon fab icon="google" size="sm" />
+              <Link to={`https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?client_id=257258138400-mr529ithjfvis5j7pglojak1m18b1vr4.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Faccounts%2Fgoogle%2Flogin%2Fcallback%2F&scope=profile&response_type=code&state=hjlX3CkGmUKI&service=lso&o2v=2&flowName=GeneralOAuthFlow`}>
+                <MDBIcon  fab icon="google" size="sm" />
+
+              </Link>
               </MDBBtn>
 
               <MDBBtn

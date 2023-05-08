@@ -13,7 +13,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MyUserContext } from "../configs/MyContext";
 import { useContext } from "react";
 const Header = () => {
@@ -21,26 +21,23 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, dispatch] = useContext(MyUserContext);
   const [q, setQ] = useState("")
-  const nav = useNavigate()
+  const defaultImage = 'https://res.cloudinary.com/hm-findingjob/image/upload/v1683087683/gqdlxvzryvif6fjnzgxz.png'
   useEffect(() => {
-    const loadCategories = async () => {
+    const loadRamdomCategory = async () => {
       setIsLoading(true);
       try {
-        var res = await API.get(endpoints["categories"]);
+        var res = await API.get(endpoints["ramdom-category"]);
+        setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
       }
-      setIsLoading(false);
       setCategories(res.data);
     };
 
-    loadCategories();
+    loadRamdomCategory();
   }, []);
-  const searchKey = (e)=>{
-    // e.preventDefaul();
-    // nav(`/products/?kw=${q}`);
-    // <Link to={`/products/?kw=${q}`}></Link>
-    
+  const search = (e)=>{
+    e.preventDefaul();
 
   }
   const logout = () => {
@@ -69,20 +66,19 @@ const Header = () => {
           Tài khoản
         </Link>
       </li>
-      
     </>
   );
-  if (user !== null && user.is_customer === true) {
+  if (user !== null && user.is_customer == true) {
     
     infoUser = (
       <>
         <li className="li_dropdown">
           <Link to={"/"}>
-            <img
-              src={user.image}
+            <img className="rounded-circle"
+              src={user.image.startsWith('http')? user.image : user.image.startsWith('static') ? 'http://127.0.0.1:8000/' + user.image : defaultImage}
               // alt={user.image}
             />
-            {user.first_name}
+            {user.first_name + ' ' + user.last_name}
            
           </Link>
           <div className="dropdown_menu">
@@ -94,20 +90,19 @@ const Header = () => {
             </ul>
           </div>
         </li>
-        
 
         
       </>
     );
   }
-  if (user !== null && user.is_seller === true) {
+  if (user !== null && user.is_seller == true) {
 
     infoUser = (
       <>
         <li className="li_dropdown">
           <Link to={"/"}>
-            <img
-              src={user.image}
+            <img className="rounded-circle"
+              src={user.image.startsWith('http')? user.image : user.image.startsWith('static') ? 'http://127.0.0.1:8000/' + user.image : defaultImage}
               // alt={user.image}
             />
             {user.first_name}
@@ -116,8 +111,7 @@ const Header = () => {
           <div className="dropdown_menu">
             <ul>
               <Link className="dropdown_menu_li" to={`/sellers/${user.id}/profile`}>Cửa hàng</Link>
-              <Link className="dropdown_menu_li" to={`/sellers/${user.id}/add-product`}>Đăng sản phẩm</Link>
-              <Link className="dropdown_menu_li" to={`/sellers/${user.id}/charts`}>Thống kê</Link>
+              <Link className="dropdown_menu_li" to={`/sellers/${user.id}/add-products`}>Đăng sản phẩm</Link>
               <Link className="dropdown_menu_li" onClick={logout}>Đăng xuất</Link>
             </ul>
           </div>
@@ -141,7 +135,7 @@ const Header = () => {
                 </div>
               </Col>
               <Col md={6}>
-                <Form onSubmit={searchKey}>
+                <Form onSubmit={search}>
                 <div id="search_section">
                   <div className="form_search">
                     <img
@@ -156,7 +150,7 @@ const Header = () => {
                       value={q}
                       onChange={e => setQ(e.target.value)}
                     />
-                    <Link  to={`/products/?kw=${q}`} style={{paddingLeft:'20px'}} className=" btn_search text-primary">
+                    <Link to={`/products/?kw=${q}`} style={{paddingLeft:'5%'}} className="btn_search text-primary">
                       Tìm kiếm
                     </Link>
                   </div>
@@ -197,9 +191,9 @@ const Header = () => {
             <ul className="header-list-category">
               {categories.map((c) => (
                 <li>
-                  <a href="" key={c.id}>
+                  <Link to={`/products/?cateId=${c.id}`} key={c.id}>
                     {c.categoryname}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -10,17 +10,25 @@ export const endpoints = {
     "brands":'/brands/',
     "seller-detail":(sellerId)=> `/sellers/${sellerId}/current-user`,
     "customer-detail":(customerId) =>`/customers/${customerId}`,
-    "order-detail":(orderId)=>`/orders/${orderId}`,
+    "order-detail":(orderId)=>`/orders/${orderId}/`,
     'comments':(productId) =>`products/${productId}/evaluations/`,
-    "register-customer":"/customer/",
-    "register-seller":"/seller/",
+    'post-comments':(productId) =>`products/${productId}/evaluates/`,
+    "register-customer":"/customers/",
+    "register-seller":"/sellers/",
     "login": '/o/token/',
     "current-customer":'/customers/current-user/',
     "current-seller":'/sellers/current-user/',
-    "add-product":(sellerId)=>`/sellers/${sellerId}/products/`,
+    "add-product":(sellerId)=>`/sellers/${sellerId}/add-products/`,
     "seller-product":(sellerId) => `/sellers/${sellerId}/products/`,
     "report-products":(sellerId) => `/sellers/${sellerId}/report-product/`,
     "ramdom-category":"/category-ramdom/",
+    'add-order-nouser':`/orders/`,
+    'add-order-user':(customerId)=>`customers/${customerId}/orders/`,
+    'add-orderItems':(orderId)=>`orders/${orderId}/add-order-items/`,
+    'order-items':(orderId)=>`orders/${orderId}/order-items/`,
+    'update-user':(customerId)=>`customers/${customerId}/update-user/`,
+    'update-order':(orderId)=>`orders/${orderId}/update-order/`
+
 
     
 }

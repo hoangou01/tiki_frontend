@@ -13,7 +13,9 @@ import React, { Component } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useNavigate, useParams } from "react-router-dom";
 import InputItem from "./InputItem";
-// import CKEditor from "./CkEditor";
+
+import axios, { Axios } from "axios";
+
 const AddProduct = () => {
   //   const [seller, setSeller] = useEffect([]);
   //   useEffect(() => {
@@ -26,11 +28,13 @@ const AddProduct = () => {
   //   }, []);
   // load categories
   
-  const image = useRef();
+  
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const { sellerId } = useParams();
+  const [uploadFile, setUploadFile] = useState("");
+  const [cloudinaryImage, setCloudinaryImage] = useState("");
   const nav = useNavigate();
   const [product, setProduct] = useState({
     description: "",
@@ -38,11 +42,10 @@ const AddProduct = () => {
     base_price: null,
     product_sku: "",
     quantity: null,
-    salable_quantity: null,
     discount: null,
-    image: "https://res.cloudinary.com/hm-findingjob/image/upload/v1681809298/iu5uoqk4pg0inb3g9m5b.jpg",
-    category: 1,
+    category: null,
     seller:35,
+    is_global : 0,
   });
   useEffect(() => {
     const loadCategories = async () => {
@@ -60,7 +63,25 @@ const AddProduct = () => {
   }, []);
   const PostProduct = (e) => {
     e.preventDefault();
-    const process = async () => {
+    const handleUpload = async() => {
+      const formData = new FormData();
+      formData.append("file", uploadFile);
+      formData.append("upload_preset", "qqvyn34x");
+      formData.append("cloud_name","hm-findingjob")
+      await axios.post(
+        "https://api.cloudinary.com/v1_1/hm-findingjob/image/upload",
+        formData
+      ).then((response) => {
+          let url = (response.data.secure_url).toString()
+          process(url);
+        })
+        .catch((error) => {
+          alert(error);
+          setErr(error);
+          
+        });
+    };
+    const process = async (url) => {
       try {
         let form = new FormData();
         form.append("description", product.description);
@@ -68,18 +89,18 @@ const AddProduct = () => {
         form.append("base_price", product.base_price);
         form.append("product_sku", product.product_sku);
         form.append("quantity", product.quantity);
-        form.append("salable_quantity", product.quantity);
+        // form.append("salable_quantity", product.quantity);
         form.append("discount", product.discount);
-        form.append("category",1);
-        form.append("seller",sellerId);
-        form.append("image", product.image);
-        form.append("seller", product.seller);
+        form.append("category",product.category);
+        form.append("image", url);
+        form.append("is_global", product.is_global)
 
-        console.log(product)
-        // alert(customer.firstName + customer.lastName + customer.username+customer.phone+ customer.is_customer)
-        // if (image.current.files.length > 0)
-
-        let res = await authAPI().post(endpoints["add-product"](sellerId), form);
+        let res = await authAPI().post(endpoints["add-product"](sellerId), form,{
+          headers: {
+            'content-type': 'application/json',
+          
+          }
+        });
         if (res.status === 201) {
           alert("Add product succesfully!");
           nav("/");
@@ -101,7 +122,7 @@ const AddProduct = () => {
       setErr("price of product isn't allow zero!");
     } else {
       setLoading(true);
-      process();
+      handleUpload()
     }
   };
 
@@ -170,14 +191,14 @@ const AddProduct = () => {
               name="quantity"
               type="number"
             />
-            <InputItem
+            {/* <InputItem
               label="số lượng sản phẩm còn trong kho"
               id="form1"
               value={product.salable_quantity}
               setValue={setValue}
               name="salable_quantity"
               type="number"
-            />
+            /> */}
             <InputItem
               label="mã giảm giá"
               id="form1"
@@ -187,7 +208,7 @@ const AddProduct = () => {
               type="number"
             />
 
-            {/* <Form.Select
+             <Form.Select
               name="category"
               onChange={setValue}
               aria-label="Default select example"
@@ -196,8 +217,24 @@ const AddProduct = () => {
               {categories.map((c) => (
                 <option value={c.id}>{c.categoryname}</option>
               ))}
-            </Form.Select> */}
-            {/* <InputItem label="ảnh sản phẩm" type="file" ref={image} /> */}
+            </Form.Select> 
+            <Form.Select
+              name="is_global"
+              onChange={setValue}
+              aria-label="Default select example"
+            >
+              <option>Open this select menu</option>
+              
+                <option value={0}>Sản phẩm nội địa</option>
+                <option value={1}>Sản phẩm nước ngoài</option>
+              
+            </Form.Select>
+            <input
+                type="file"
+                onChange={(event) => {
+                  setUploadFile(event.target.files[0]);
+                }}
+              />
             {renderErr}
             <Button variant="primary" type="submit">
               Submit

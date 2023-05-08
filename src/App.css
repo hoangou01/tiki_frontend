@@ -1333,6 +1333,7 @@ a{
     color: rgb(36, 36, 36);
 }
 .dropdown_menu{
+  z-index: 1000;
   display: none;
   background-color: #f3f1f1;
   /* padding: 4px 8px; */

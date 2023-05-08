@@ -25,8 +25,9 @@ import { MyUserContext } from "./configs/MyContext";
 import ProductSeller from "./components/sellerpage/ProductSeller";
 import SellerInfo from "./components/sellerpage/SellerInfo";
 import FilterProduct from "./layouts/FilterProduct";
-import ChartJs from "./layouts/ChartJs";
 import Cart from "./layouts/Cart";
+import ChartJs from "./layouts/ChartJs";
+import Order from "./layouts/Order";
 function App() {
   const [user, dispatch] = useReducer(
     myUserReducer,
@@ -44,24 +45,26 @@ function App() {
             <Route path="/sellers/:sellerId/" Component={SellerPage}>
               <Route path="profile" Component={SellerInfo} />
               <Route path="products" Component={ProductSeller} />
-              
+              <Route path="charts" Component={ChartJs} />
             </Route>
-            <Route path="/sellers/:sellerId/charts" Component={ChartJs}></Route>
-            <Route path="/sellers/:sellerId/add-product" Component={AddProduct}></Route>
+            <Route exact path="/cart" element={<Cart />}/>
+            <Route path="/sellers/:sellerId/add-product" Component={SellerPage}></Route>
             <Route exact path="/signup/customer" Component={SignupCustomer} />
             <Route exact path="/signup/seller" Component={SignupSeller} />
-            <Route path="/cart" Component={Cart} />
             <Route exact path="/login/" element={<Login />}>
               <Route path="seller" element={<LoginSeller />} />
               <Route path="customer" element={<LoginCustomer />} />
             </Route>
-            {/* <Route exact path="/add/product" Component={AddProduct} /> */}
+            <Route exact path="/sellers/:sellerId/add-products" Component={AddProduct} />
             <Route path="/customers/:customerId" element={<ProfileCustomer />}>
               <Route path="profile" element={<CustomerInfo />} />
               <Route path="orders" element={<CustomerOrder />} />
               <Route path="orders/:orderId" element={<OrderDetail />} />
-              
             </Route>
+            <Route path="/orders/:orderId/" element={<Order />}/>
+            <Route exact path="/login/:noneUser/customer/" element={<LoginCustomer />}/>
+
+            
             {/* <Route path='*' element={<NotFound />} /> */}
           </Routes>
           <Footer />

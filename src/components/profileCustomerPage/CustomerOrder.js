@@ -11,9 +11,47 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import API, { authAPI, endpoints } from "../../configs/API";
+import LoadingSpinner from "../LoadingSpinner";
+import { useContext } from "react";
+import { MyUserContext } from "../../configs/MyContext";
+import { useEffect } from "react";
 
 const CustomerOrder = () => {
+  const [user, dispatch] = useContext(MyUserContext);
+  const [order, setOrder] = useState([]);
+  const [orderItem , setOrderItem] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const {customerId} = useParams();
+  useEffect(() => {
+    const loadOrder = async () => {
+      setLoading(true);
+      try {
+        var res = await authAPI().get(endpoints["customer-orders"](customerId));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+      setOrder(res.data);
+    };
+    loadOrder();
+  }, [])
+  useEffect(() => {
+    const loadOrderItems = async () => {
+      setLoading(true);
+      try {
+        var res = await API.get(endpoints["order-items"](order.id));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+      setOrderItem(...orderItem,res.data);
+    };
+    loadOrderItems();
+  }, [order.id])
+  console.log(orderItem)
   const renderListOrder = (
     <>
       <section className="vh-50">
@@ -24,7 +62,8 @@ const CustomerOrder = () => {
               <MDBCol lg="12" className="mb-4 mb-lg-0">
                 <hr></hr>
 
-                <Link to={`/customers/${1}/orders/${1}`} className="text-dark">
+                {order.map(o=>(
+                  <Link to={`/customers/${1}/orders/${1}`} className="text-dark">
                   <div className="order_item">
                     <div className="d-flex">
                       <div className="left">
@@ -35,8 +74,9 @@ const CustomerOrder = () => {
                       </div>
                       <div className="right d-flex flex-column">
                         <h5 className="order_item_name">
-                          Combo 5 GIỎ SẮT Treo Chậu Hoa Ban Công Hình Tròn - Màu
-                          Đen
+                        {o.order_item.product.name}
+                          {/* Combo 5 GIỎ SẮT Treo Chậu Hoa Ban Công Hình Tròn - Màu
+                          Đen */}
                         </h5>
                         <div className="d-flex price">
                           <span>
@@ -51,7 +91,8 @@ const CustomerOrder = () => {
                     </div>
                   </div>
                 </Link>
-                
+                ))}
+
               </MDBCol>
             </div>
           </MDBRow>

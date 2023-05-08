@@ -4,7 +4,11 @@ import ProfileMenu from "../components/profileCustomerPage/ProfileMenu"
 import CustomerOrder from "../components/profileCustomerPage/CustomerOrder"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Outlet } from "react-router-dom"
+import { MyUserContext } from "../configs/MyContext"
+import { useContext } from "react"
 const ProfileCustomer = ()=>{
+    const [user, dispatch] = useContext(MyUserContext);
+
     return(
         <>
             <Container>
